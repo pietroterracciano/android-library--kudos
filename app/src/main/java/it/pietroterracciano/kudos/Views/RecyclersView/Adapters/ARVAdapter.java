@@ -1,19 +1,22 @@
 package it.pietroterracciano.kudos.Views.RecyclersView.Adapters;
 
+import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import it.pietroterracciano.kudos.Constants.CString;
+import it.pietroterracciano.kudos.Controllers.LayoutController;
 import it.pietroterracciano.kudos.Kudos;
 import it.pietroterracciano.kudos.Utils.ArrayUtils;
 import it.pietroterracciano.kudos.Utils.ListUtils;
+import it.pietroterracciano.kudos.Utils.ObjectUtils;
 import it.pietroterracciano.kudos.Views.RecyclersView.ViewHolders.ARVViewHolder;
 
 public abstract class ARVAdapter
@@ -28,19 +31,17 @@ extends
     @NonNull
     public final int TransientID;
     @NonNull
-    private Object _oLock;
+    private final Object _oLock;
     @NonNull
     private final List<ItemType> _lItems;
     @NonNull
     private boolean _bIsItemValidationEnabled;
+    @NonNull @LayoutRes
+    private final int _iLayoutResourceID;
+    @Nullable
+    private final Constructor<ViewHolderType> _cnsViewHolderType;
     @NonNull
-    private final HashMap<String, ViewHolderType>
-            _hmIHKeys2VHolders;
-
-    @Nullable
-    public final Class<ViewHolderType> ViewHoldeTypeClass;
-    @Nullable
-    public final Class<ItemType> ItemTypeClass;
+    private final Class<ItemType> _clsItemType;
 
     @NonNull
     public RVAdapterType isItemValidationEnabled(@NonNull boolean bIsItemValidationEnabled)
@@ -54,14 +55,19 @@ extends
         return _bIsItemValidationEnabled;
     }
 
-    public ARVAdapter(@Nullable Class<ViewHolderType> clsViewHolder, @Nullable Class<ItemType> clsItemType)
+    public ARVAdapter
+    (
+        @NonNull Class<ViewHolderType> clsViewHolder,
+        @NonNull Class<ItemType> clsItemType,
+        @NonNull @LayoutRes int iLayoutResourceID
+    )
     {
         TransientID = Kudos.newTransientID();
         _oLock = new Object();
-        _hmIHKeys2VHolders = new HashMap<>();
         _lItems = new ArrayList<>();
-        ViewHoldeTypeClass = clsViewHolder;
-        ItemTypeClass = clsItemType;
+        _cnsViewHolderType = ObjectUtils.getDeclaredConstructor(clsViewHolder, View.class);
+        _clsItemType = clsItemType;
+        _iLayoutResourceID = iLayoutResourceID;
     }
 
     @NonNull
@@ -137,7 +143,7 @@ extends
     {
         synchronized (_oLock)
         {
-            return ArrayUtils.from(_lItems, ItemTypeClass);
+            return ArrayUtils.from(_lItems, _clsItemType);
         }
     }
 
@@ -148,6 +154,12 @@ extends
         {
             return ListUtils.get(_lItems, i);
         }
+    }
+
+    @NonNull
+    public ViewHolderType onCreateViewHolder(@NonNull ViewGroup vg, @NonNull int i)
+    {
+        return ObjectUtils.newInstance(_cnsViewHolderType, LayoutController.inflate(_iLayoutResourceID, vg, false));
     }
 
     @Override

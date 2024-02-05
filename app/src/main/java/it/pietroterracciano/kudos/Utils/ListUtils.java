@@ -9,44 +9,44 @@ import java.util.Objects;
 public abstract class ListUtils
 {
     @NonNull
-    public static <ObjectType> int indexOf(@Nullable List<ObjectType> l, @Nullable ObjectType o)
+    public static <T> int indexOf(@Nullable List<T> l, @Nullable T o)
     {
         return indexLastIndexOf(l, o, false);
     }
     @NonNull
-    public static <ObjectType> int lastIndexOf(@Nullable List<ObjectType> l, @Nullable ObjectType o)
+    public static <T> int lastIndexOf(@Nullable List<T> l, @Nullable T o)
     {
         return indexLastIndexOf(l, o, true);
     }
     @NonNull
-    private static <ObjectType> int indexLastIndexOf
+    private static <T> int indexLastIndexOf
     (
-        @Nullable List<ObjectType> l,
-        @Nullable ObjectType o,
+        @Nullable List<T> l,
+        @Nullable T o,
         @NonNull boolean bLastIndexOf
     )
     {
         if(l == null)
             return -2;
 
-        int j = -1;
+        int j = l.size(), k = -1;
 
-        for(int i=0; i<l.size(); i++)
+        for(int i=0; i<j; i++)
         {
             if(!Objects.equals(l.get(i), o))
                 continue;
 
-            j = i;
+            k = i;
 
             if(!bLastIndexOf)
                 break;
         }
 
-        return j;
+        return k;
     }
 
     @NonNull
-    public static <ObjectType> boolean add(@Nullable List<ObjectType> l, @Nullable ObjectType o)
+    public static <T> boolean add(@Nullable List<T> l, @Nullable T o)
     {
         if(l == null)
             return false;
@@ -56,7 +56,7 @@ public abstract class ListUtils
     }
 
     @NonNull
-    public static <ObjectType> boolean set(@Nullable List<ObjectType> l, @NonNull int i, @Nullable ObjectType o)
+    public static <T> boolean set(@Nullable List<T> l, @NonNull int i, @Nullable T o)
     {
         if(!isValidIndex(l, i))
             return false;
@@ -66,7 +66,7 @@ public abstract class ListUtils
     }
 
     @NonNull
-    public static <ObjectType> int adse(@Nullable List<ObjectType> l, @Nullable ObjectType o)
+    public static <T> int adse(@Nullable List<T> l, @Nullable T o)
     {
         int i = indexOf(l, o);
 
@@ -79,7 +79,7 @@ public abstract class ListUtils
     }
 
     @Nullable
-    public static <ObjectType> ObjectType get(@Nullable List<ObjectType> l, @NonNull int i)
+    public static <T> T get(@Nullable List<T> l, @NonNull int i)
     {
         return
             isValidIndex(l, i)
