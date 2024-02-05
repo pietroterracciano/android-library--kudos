@@ -2,6 +2,7 @@ package it.pietroterracciano.kudos;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +15,8 @@ public abstract class Kudos
     private static Context _oContext;
     @Nullable
     private static Activity _oActivity;
+    @Nullable
+    private static Resources _oResources;
     @NonNull
     private static int _iTransientID;
 
@@ -31,12 +34,15 @@ public abstract class Kudos
     public static void setContext(@Nullable Context oContext)
     {
         _oContext = oContext;
+        _oResources = _oContext != null ? _oContext.getResources() : null;
     }
     @Nullable
     public static Context getContext()
     {
         return _oContext;
     }
+    @Nullable
+    public static Resources getResources() { return _oResources; }
 
     @NonNull
     public static int newTransientID()
