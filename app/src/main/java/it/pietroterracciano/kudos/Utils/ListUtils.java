@@ -88,7 +88,7 @@ public abstract class ListUtils
     }
 
     @Nullable
-    public static boolean remove(@Nullable List l, @NonNull int i)
+    public static boolean remove(@Nullable List<?> l, @NonNull int i)
     {
         if(!isValidIndex(l, i))
             return false;
@@ -98,7 +98,7 @@ public abstract class ListUtils
     }
 
     @NonNull
-    public static boolean isValidIndex(@Nullable List l, @NonNull int i)
+    public static boolean isValidIndex(@Nullable List<?> l, @NonNull int i)
     {
         return
             l != null
