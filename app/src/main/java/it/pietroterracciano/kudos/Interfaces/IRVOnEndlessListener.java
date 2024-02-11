@@ -1,4 +1,4 @@
-package it.pietroterracciano.kudos.Views.RecyclersView.Interfaces;
+package it.pietroterracciano.kudos.Interfaces;
 
 public interface IRVOnEndlessListener
 {

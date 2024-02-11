@@ -14,5 +14,6 @@ public enum EVProperty
     MarginRight,
     Gravity,
     X,
-    Y
+    Y,
+    Text
 }

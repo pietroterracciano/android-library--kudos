@@ -1,4 +1,4 @@
-package it.pietroterracciano.kudos.Views.Handlers;
+package it.pietroterracciano.kudos.Handlers;
 
 import android.view.View;
 import android.view.ViewGroup;

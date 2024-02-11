@@ -1,38 +1,30 @@
-package it.pietroterracciano.kudos.Views.RecyclersView.Adapters;
+package it.pietroterracciano.kudos.Adapters;
 
-import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import it.pietroterracciano.kudos.Constants.CClass;
-import it.pietroterracciano.kudos.Controllers.LayoutController;
 import it.pietroterracciano.kudos.Controllers.ThreadController;
 import it.pietroterracciano.kudos.Kudos;
+import it.pietroterracciano.kudos.R;
 import it.pietroterracciano.kudos.Utils.ArrayUtils;
 import it.pietroterracciano.kudos.Utils.ConstructorUtils;
 import it.pietroterracciano.kudos.Utils.LayoutManagerUtils;
 import it.pietroterracciano.kudos.Utils.ListUtils;
-import it.pietroterracciano.kudos.Utils.MethodUtils;
 import it.pietroterracciano.kudos.Utils.ObjectUtils;
 import it.pietroterracciano.kudos.Utils.TypesUtils.NumericUtils.intUtils;
-import it.pietroterracciano.kudos.Views.RecyclersView.Enums.ERVEvent;
-import it.pietroterracciano.kudos.Views.RecyclersView.Interfaces.IRVOnEndlessListener;
-import it.pietroterracciano.kudos.Views.RecyclersView.Interfaces.IRVOnItemClickListener;
-import it.pietroterracciano.kudos.Views.RecyclersView.Interfaces.IRVOnItemTouchListener;
-import it.pietroterracciano.kudos.Views.RecyclersView.Interfaces.IRVOnItemEventListener;
-import it.pietroterracciano.kudos.Views.RecyclersView.Layouts.RVItemLayout;
-import it.pietroterracciano.kudos.Views.RecyclersView.ViewHolders.RVViewHolder;
+import it.pietroterracciano.kudos.Interfaces.IRVOnEndlessListener;
+import it.pietroterracciano.kudos.Layouts.RVItemLayout;
+import it.pietroterracciano.kudos.ViewHolders.RVViewHolder;
 
 public abstract class ARVAdapter
 <
@@ -42,17 +34,12 @@ extends
     RecyclerView.Adapter<RVViewHolder>
 {
     @NonNull
-    private static final Class<ARVAdapter> __clsAAdapter = ARVAdapter.class;
+    private static final RVItemLayout
+        __ilBlank = new RVItemLayout<>(Object.class, R.layout.recycler_view__item__blank, null);
     @NonNull
-    private static final Class<RVViewHolder> __clsViewHolder = RVViewHolder.class;
-    @NonNull
-    private static final Method
-        __mthVHinjectOnItemEventListeners = MethodUtils.getDeclared(__clsViewHolder, "injectOnItemEventListeners", CClass.HashMap);
-    @NonNull
-    private static final Constructor<RVViewHolder> __cnsViewHolder = ConstructorUtils.getDeclared(__clsViewHolder, __clsAAdapter, CClass.View);
+    private static final Constructor<RVViewHolder>
+        __cnsViewHolder = ConstructorUtils.getDeclared(RVViewHolder.class, CClass.ViewGroup, RVItemLayout.class);
 
-    @NonNull
-    private final HashMap<Integer, HashMap<ERVEvent, IRVOnItemEventListener>> _hmResourceIDs2Events2OnItemEventListeners;
     @NonNull
     public final int TransientID;
     @NonNull
@@ -61,7 +48,9 @@ extends
     @NonNull
     private final List<Object> _lItems;
     @NonNull
-    private final HashMap<Class<?>, RVItemLayout<?>> _hmItemClasses2ItemLayouts;
+    private final HashMap<Class<?>, Integer> _hmItemClasses2LayoutResourceIDs;
+    @NonNull
+    private final HashMap<Integer, RVItemLayout<?>> _hmLayoutResourceIDs2ItemLayouts;
     @Nullable
     private IRVOnEndlessListener _lsnOnEndless;
     @NonNull
@@ -129,17 +118,25 @@ extends
             }
         };
 
-        _hmItemClasses2ItemLayouts = new HashMap<>();
-        _hmResourceIDs2Events2OnItemEventListeners = new HashMap<>();
+        _hmItemClasses2LayoutResourceIDs = new HashMap<>();
+        _hmLayoutResourceIDs2ItemLayouts = new HashMap<>();
 
-        RVItemLayout<?>[] a = onRegisterItemsLayouts();
+        List<RVItemLayout<?>> l = new ArrayList<>();
+        onItemLayoutsRegister(l);
 
-        for(int i=0; i<a.length; i++)
-            _hmItemClasses2ItemLayouts.put(a[i].Class, a[i]);
+        RVItemLayout<?> ili;
+
+        int j = l.size();
+        for(int i=0; i<j; i++)
+        {
+            ili = l.get(i);
+            if(ili == null) continue;
+            _hmItemClasses2LayoutResourceIDs.put(ili.ItemClass, ili.LayoutResourceID);
+            _hmLayoutResourceIDs2ItemLayouts.put(ili.LayoutResourceID, ili);
+        }
     }
 
-    @NonNull
-    protected abstract RVItemLayout<?>[] onRegisterItemsLayouts();
+    protected abstract void onItemLayoutsRegister(@NonNull List<RVItemLayout<?>> l);
 
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView v)
@@ -167,37 +164,8 @@ extends
         return (AdapterType) this;
     }
 
-    public AdapterType setOnItemClickListener(@IdRes @NonNull int i, @Nullable IRVOnItemClickListener lst)
-    {
-        return setOnItemEventListener(i, ERVEvent.OnClick, lst);
-    }
-
-    public AdapterType setOnItemTouchListener(@IdRes @NonNull int i, @Nullable IRVOnItemTouchListener lst)
-    {
-        return setOnItemEventListener(i, ERVEvent.OnTouch, lst);
-    }
-
-
-
-    private AdapterType setOnItemEventListener
-    (
-        @IdRes @NonNull int i,
-        @NonNull ERVEvent e,
-        @Nullable IRVOnItemEventListener lst
-    )
-    {
-        synchronized (_oLock)
-        {
-            HashMap<ERVEvent, IRVOnItemEventListener> hm;
-            hm = _hmResourceIDs2Events2OnItemEventListeners.computeIfAbsent(i, j -> new HashMap<>());
-            hm.put(e, lst);
-        }
-
-        return (AdapterType) this;
-    }
-
     @NonNull
-    public <ItemType> int indexOfItem(@Nullable ItemType oItem)
+    public int indexOfItem(@Nullable Object oItem)
     {
         synchronized (_oLock)
         {
@@ -206,7 +174,7 @@ extends
     }
 
     @NonNull
-    public <ItemType> int lastIndexOfItem(@Nullable ItemType oItem)
+    public int lastIndexOfItem(@Nullable Object oItem)
     {
         synchronized (_oLock)
         {
@@ -215,7 +183,7 @@ extends
     }
 
     @NonNull
-    public <ItemType> boolean adseItem(@Nullable ItemType itm)
+    public boolean adseItem(@Nullable Object itm)
     {
         if(itm == null)
             return false;
@@ -236,7 +204,7 @@ extends
         return removeItem(getItemCount()-1);
     }
     @NonNull
-    public <ItemType> boolean removeItem(@Nullable ItemType itm)
+    public boolean removeItem(@Nullable Object itm)
     {
         return removeItem(indexOfItem(itm));
     }
@@ -289,19 +257,37 @@ extends
         }
     }
 
-    @Override
-    public int getItemViewType(int i)
+    @Nullable
+    private Integer getItemViewType(@Nullable Object itm)
     {
         synchronized (_oLock)
         {
-            return _hmItemClasses2ItemLayouts.get(getItem(i).getClass()).LayoutResourceID;
+            return itm != null ? _hmItemClasses2LayoutResourceIDs.get(itm.getClass()) : null;
+        }
+    }
+    @Override
+    @NonNull
+    public int getItemViewType(@NonNull int i)
+    {
+        Integer j = getItemViewType(getItem(i));
+        return j != null ? j : R.layout.recycler_view__item__blank;
+    }
+
+    @Nullable
+    private RVItemLayout<?> getItemLayout(@NonNull @LayoutRes int i)
+    {
+        synchronized (_oLock)
+        {
+            return _hmLayoutResourceIDs2ItemLayouts.get(i);
         }
     }
 
+
     @NonNull
-    public RVViewHolder onCreateViewHolder(@NonNull ViewGroup vg, @NonNull int i)
+    public RVViewHolder onCreateViewHolder(@NonNull ViewGroup vg, @NonNull @LayoutRes int i)
     {
-        return ConstructorUtils.newInstance(__cnsViewHolder, this, LayoutController.inflate(i, vg, false));
+        RVItemLayout<?> il = getItemLayout(i);
+        return ConstructorUtils.newInstance(__cnsViewHolder, vg, il != null ? il : __ilBlank);
     }
 
     @Override
@@ -310,9 +296,8 @@ extends
         synchronized (_oLock)
         {
             Object itm = getItem(i);
-            RVItemLayout il = _hmItemClasses2ItemLayouts.get(itm.getClass());
-            if(il.OnItemInvalidateX != null) il.OnItemInvalidateX.accept(vh.View, itm);
-            MethodUtils.invoke(vh, __mthVHinjectOnItemEventListeners, _hmResourceIDs2Events2OnItemEventListeners);
+            if(itm == null || vh.ItemLayout.OnInvalidateItemXListener == null) return;
+            vh.ItemLayout.OnInvalidateItemXListener.invoke(vh.itemView, i, ObjectUtils.cast(itm));
         }
     }
 }
