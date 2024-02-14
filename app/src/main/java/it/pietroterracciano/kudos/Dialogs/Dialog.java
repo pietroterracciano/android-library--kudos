@@ -6,7 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 
-import it.pietroterracciano.kudos.Behaviors.DialogBaseBehavior;
+import it.pietroterracciano.kudos.Behaviors.ADialogBehavior;
+import it.pietroterracciano.kudos.Behaviors.DialogBehavior;
 import it.pietroterracciano.kudos.Interfaces.IDialog;
 import it.pietroterracciano.kudos.Kudos;
 
@@ -15,10 +16,10 @@ public class Dialog
     implements IDialog
 {
     @NonNull
-    private DialogBaseBehavior _dlgBehavior;
+    private DialogBehavior _dlgBehavior;
 
     @NonNull
-    public DialogBaseBehavior getBaseBehavior()
+    public DialogBehavior getBaseBehavior()
     {
         return _dlgBehavior;
     }
@@ -49,6 +50,6 @@ public class Dialog
     public void onContentChanged()
     {
         super.onContentChanged();
-        _dlgBehavior = DialogBaseBehavior.from(this);
+        _dlgBehavior = DialogBehavior.from(this);
     }
 }

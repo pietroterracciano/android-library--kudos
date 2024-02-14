@@ -7,16 +7,18 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.annotation.GravityInt;
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 
-import it.pietroterracciano.kudos.Dialogs.BottomSheetDialog;
+import it.pietroterracciano.kudos.Enums.EVLayoutParam;
+import it.pietroterracciano.kudos.Enums.EWLayoutParam;
 import it.pietroterracciano.kudos.Utils.TypesUtils.NumericUtils.intUtils;
-import it.pietroterracciano.kudos.Utils.ViewUtils;
-import it.pietroterracciano.kudos.Utils.WindowUtils;
+import it.pietroterracciano.kudos.Utils.Views.ViewUtils;
+import it.pietroterracciano.kudos.Utils.Views.WindowUtils;
 
-public class DialogBaseBehavior
+public abstract class ADialogBehavior<DialogType extends ADialogBehavior<DialogType>>
 {
     @NonNull
     private int
@@ -29,76 +31,82 @@ public class DialogBaseBehavior
         _bIsWDimBehindEnabled,
         _bHasWDimBehindEnabled;
     @Nullable
-    private View x_vRoot;
+    private View x_vRoot, x_vInflated;
     @Nullable
     private Window x_oWindow;
     @NonNull
     private Dialog x_oDialog;
 
+    @Nullable
+    public View getInflatedView()
+    {
+        return x_vInflated;
+    }
+
     @NonNull
-    public DialogBaseBehavior setGravity(@GravityInt @NonNull int i)
+    public DialogType setGravity(@GravityInt @NonNull int i)
     {
         _iWGravity = i;
         _bHasWGravity = true;
         invalidateWGravity();
-        return this;
+        return (DialogType)this;
     }
 
     @NonNull
-    public DialogBaseBehavior setWindowAnimations(@NonNull @StyleRes int i)
+    public DialogType setWindowAnimations(@NonNull @StyleRes int i)
     {
         _iWWindowAnimations = i;
         _bHasWWindowAnimations = true;
         invalidateWWindowAnimations();
-        return this;
+        return (DialogType)this;
     }
 
     @NonNull
-    public DialogBaseBehavior isDimBehindEnabled(@NonNull boolean b)
+    public DialogType isDimBehindEnabled(@NonNull boolean b)
     {
         _bIsWDimBehindEnabled = b;
         _bHasWDimBehindEnabled = true;
         invalidateWDimBehind();
-        return  this;
+        return (DialogType)this;
     }
 
     @NonNull
-    public DialogBaseBehavior setX(@NonNull int i)
+    public DialogType setX(@NonNull int i)
     {
         _iWX = i;
         _bHasWX = true;
         invalidateWX();
-        return this;
+        return (DialogType)this;
     }
 
     @NonNull
-    public DialogBaseBehavior setY(@NonNull int i)
+    public DialogType setY(@NonNull int i)
     {
         _iWY = i;
         _bHasWY = true;
         invalidateWY();
-        return this;
+        return (DialogType)this;
     }
 
     @NonNull
-    public DialogBaseBehavior setWidth(@NonNull int i)
+    public DialogType setWidth(@NonNull int i)
     {
         _iRWidth = i;
         _bHasRWidth = true;
         invalidateWidth();
-        return this;
+        return (DialogType)this;
     }
 
     @NonNull
-    public DialogBaseBehavior setHeight(@NonNull int i)
+    public DialogType setHeight(@NonNull int i)
     {
         _iRHeight = i;
         _bHasRHeight = true;
         invalidateHeight();
-        return this;
+        return (DialogType)this;
     }
 
-    private DialogBaseBehavior(@NonNull Dialog dlg)
+    protected ADialogBehavior(@NonNull Dialog dlg)
     {
         x_oDialog = dlg;
 
@@ -109,13 +117,13 @@ public class DialogBaseBehavior
     private void invalidateWGravity()
     {
         invalidateWReference();
-        WindowUtils.setGravity(x_oWindow, _iWGravity);
+        WindowUtils.setLayoutParam(x_oWindow, EWLayoutParam.Gravity, _iWGravity);
     }
 
     private void invalidateWWindowAnimations()
     {
         invalidateWReference();
-        WindowUtils.setWindowAnimations(x_oWindow, _iWWindowAnimations);
+        WindowUtils.setLayoutParam(x_oWindow, EWLayoutParam.Animations, _iWWindowAnimations);
     }
 
     private void invalidateWDimBehind()
@@ -131,20 +139,20 @@ public class DialogBaseBehavior
     private void invalidateWX()
     {
         invalidateWReference();
-        WindowUtils.setX(x_oWindow, _iWX);
+        WindowUtils.setLayoutParam(x_oWindow, EWLayoutParam.X, _iWX);
     }
 
     private void invalidateWY()
     {
         invalidateWReference();
-        WindowUtils.setY(x_oWindow, _iWY);
+        WindowUtils.setLayoutParam(x_oWindow, EWLayoutParam.Y, _iWY);
     }
 
     private void invalidateWidth()
     {
         invalidateRReference();
         invalidateWReference();
-        ViewUtils.setHeight(x_vRoot, _iRWidth);
+        ViewUtils.setLayoutParam(x_vRoot, EVLayoutParam.Width, _iRWidth);
         WindowUtils.setLayout(x_oWindow, _iRWidth, _iRHeight);
     }
 
@@ -152,7 +160,7 @@ public class DialogBaseBehavior
     {
         invalidateRReference();
         invalidateWReference();
-        ViewUtils.setHeight(x_vRoot, _iRHeight);
+        ViewUtils.setLayoutParam(x_vRoot, EVLayoutParam.Height, _iRHeight);
         WindowUtils.setLayout(x_oWindow, _iRWidth, _iRHeight);
     }
 
@@ -161,28 +169,33 @@ public class DialogBaseBehavior
         if(x_vRoot != null) return;
 
         ViewGroup
-            x_oViewGroup = x_oDialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            x_oViewGroup = onFindRootViewGroup();
 
-        if(x_oViewGroup != null)
-            x_vRoot = x_oViewGroup;
-        else
-        {
-            x_oViewGroup = x_oDialog.findViewById(android.R.id.content);
-            if(x_oViewGroup == null) return;
-        }
+        if(x_oViewGroup == null)
+            return;
 
-        View
-            x_oView = x_oViewGroup.getChildAt(0);
-
-        if(x_vRoot == null)
-            x_vRoot = x_oView;
+        x_vRoot = onFindRootView(x_oViewGroup);
+        x_vInflated = onFindInflatedView(x_oViewGroup);
 
         if(!_bHasRWidth)
-            _iRWidth = intUtils.from(ViewUtils.getWidth(x_oView));
+            _iRWidth = intUtils.from(ViewUtils.getLayoutParam(x_vInflated, EVLayoutParam.Width));
 
         if(!_bHasRHeight)
-            _iRHeight = intUtils.from(ViewUtils.getHeight(x_oView));
+            _iRHeight = intUtils.from(ViewUtils.getLayoutParam(x_vInflated, EVLayoutParam.Height));
     }
+
+    @Nullable
+    protected <ViewType extends View> ViewType findViewById(@IdRes @NonNull int i)
+    {
+        return x_oDialog.findViewById(i);
+    }
+
+    @Nullable
+    protected abstract ViewGroup onFindRootViewGroup();
+    @Nullable
+    protected abstract View onFindRootView(@NonNull ViewGroup x_oViewGroup);
+    @Nullable
+    protected abstract View onFindInflatedView(@NonNull ViewGroup x_oViewGroup);
 
     private void invalidateWReference()
     {
@@ -191,24 +204,18 @@ public class DialogBaseBehavior
         x_oWindow = x_oDialog.getWindow();
 
         if(!_bHasWX)
-            _iWX = intUtils.from(WindowUtils.getX(x_oWindow));
+            _iWX = intUtils.from(WindowUtils.getLayoutParam(x_oWindow, EWLayoutParam.X));
 
         if(!_bHasWY)
-            _iWY = intUtils.from(WindowUtils.getY(x_oWindow));
+            _iWY = intUtils.from(WindowUtils.getLayoutParam(x_oWindow, EWLayoutParam.Y));
 
         if(!_bHasWGravity)
-            _iWGravity = intUtils.from(WindowUtils.getGravity(x_oWindow));
+            _iWGravity = intUtils.from(WindowUtils.getLayoutParam(x_oWindow, EWLayoutParam.Gravity));
 
         if(!_bHasWWindowAnimations)
-            _iWWindowAnimations = intUtils.from(WindowUtils.getWindowAnimations(x_oWindow));
+            _iWWindowAnimations = intUtils.from(WindowUtils.getLayoutParam(x_oWindow, EWLayoutParam.Animations));
 
         if(!_bHasWDimBehindEnabled)
             _bIsWDimBehindEnabled = true;
-    }
-
-    @Nullable
-    public static DialogBaseBehavior from(@Nullable Dialog dlg)
-    {
-        return dlg != null ? new DialogBaseBehavior(dlg) : null;
     }
 }

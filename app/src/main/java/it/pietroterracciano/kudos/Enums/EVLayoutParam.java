@@ -1,9 +1,7 @@
 package it.pietroterracciano.kudos.Enums;
 
-public enum EVProperty
+public enum EVLayoutParam
 {
-    WindowAnimations,
-    RotationAnimation,
     Height,
     Width,
     MarginBottom,
@@ -12,8 +10,5 @@ public enum EVProperty
     MarginLeft,
     MarginEnd,
     MarginRight,
-    Gravity,
-    X,
-    Y,
-    Text
+    Weight
 }

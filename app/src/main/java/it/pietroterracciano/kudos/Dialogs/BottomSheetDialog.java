@@ -6,7 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 
-import it.pietroterracciano.kudos.Behaviors.DialogBaseBehavior;
+import it.pietroterracciano.kudos.Behaviors.ADialogBehavior;
+import it.pietroterracciano.kudos.Behaviors.BottomSheetDialogBehavior;
 import it.pietroterracciano.kudos.Interfaces.IDialog;
 import it.pietroterracciano.kudos.Kudos;
 
@@ -15,10 +16,10 @@ public class BottomSheetDialog
     implements IDialog
 {
     @NonNull
-    private DialogBaseBehavior _dlgBehavior;
+    private BottomSheetDialogBehavior _dlgBehavior;
 
     @NonNull
-    public DialogBaseBehavior getBaseBehavior()
+    public BottomSheetDialogBehavior getBaseBehavior()
     {
         return _dlgBehavior;
     }
@@ -42,6 +43,6 @@ public class BottomSheetDialog
     @Override
     public void onContentChanged()
     {
-        _dlgBehavior = DialogBaseBehavior.from(this);
+        _dlgBehavior = BottomSheetDialogBehavior.from(this);
     }
 }

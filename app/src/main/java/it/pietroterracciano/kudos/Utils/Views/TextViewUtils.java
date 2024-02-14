@@ -1,14 +1,10 @@
-package it.pietroterracciano.kudos.Utils;
+package it.pietroterracciano.kudos.Utils.Views;
 
-import android.view.WindowManager;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import it.pietroterracciano.kudos.Utils.LayoutParams.LayoutParamsUtils;
 
-import it.pietroterracciano.kudos.Enums.EVProperty;
-
-public abstract class TextViewUtils extends BaseViewUtils
+public abstract class TextViewUtils extends LayoutParamsUtils
 {
     public static boolean setText(TextView tv, Object o)
     {
@@ -20,4 +16,5 @@ public abstract class TextViewUtils extends BaseViewUtils
         tv.setText(s);
         return true;
     }
+
 }

@@ -4,10 +4,10 @@ import android.content.DialogInterface;
 
 import androidx.annotation.NonNull;
 
-import it.pietroterracciano.kudos.Behaviors.DialogBaseBehavior;
+import it.pietroterracciano.kudos.Behaviors.ADialogBehavior;
 
 public interface IDialog extends DialogInterface
 {
     @NonNull
-    DialogBaseBehavior getBaseBehavior();
+    ADialogBehavior getBaseBehavior();
 }
