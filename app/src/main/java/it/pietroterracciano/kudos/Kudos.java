@@ -3,6 +3,7 @@ package it.pietroterracciano.kudos;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.util.DisplayMetrics;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +29,8 @@ public abstract class Kudos
     private static FragmentManager _oFragmentManager;
     @Nullable
     private static Lifecycle _oLifecycle;
+    @Nullable
+    private static DisplayMetrics _oDisplayMetrics;
 
     public static void registerActivity(@Nullable AppCompatActivity act)
     {
@@ -48,8 +51,8 @@ public abstract class Kudos
     private static void registerLifecycle(@Nullable Lifecycle lc) {_oLifecycle = lc;}
     public static void registerActivity(@Nullable Activity act) { _oActivity = act; registerContext(act); }
     public static void registerContext(@Nullable Context cnt) { _oContext = cnt; registerResources(_oContext != null ? _oContext.getResources() : null); }
-    private static void registerResources(@Nullable Resources rsr) { _oResources = rsr;}
-
+    private static void registerResources(@Nullable Resources rsr) { _oResources = rsr; registerDisplayMetrics(_oResources != null ? _oResources.getDisplayMetrics() : null);}
+    private static void registerDisplayMetrics(@Nullable DisplayMetrics dm) { _oDisplayMetrics = dm;}
     @Nullable
     public static <T extends Activity> T getActivity() { return ObjectUtils.cast(_oActivity); }
     @Nullable
@@ -60,6 +63,8 @@ public abstract class Kudos
     public static FragmentManager getFragmentManager() { return _oFragmentManager; }
     @Nullable
     public static Lifecycle getLifecycle() { return _oLifecycle; }
+    @Nullable
+    public static DisplayMetrics getDisplayMetrics() { return _oDisplayMetrics; }
 
     @NonNull
     public static int newTransientID()

@@ -38,6 +38,11 @@ public abstract class ADialogBehavior<DialogType extends ADialogBehavior<DialogT
     private Dialog x_oDialog;
 
     @Nullable
+    public View getRootView()
+    {
+        return x_vRoot;
+    }
+    @Nullable
     public View getInflatedView()
     {
         return x_vInflated;
