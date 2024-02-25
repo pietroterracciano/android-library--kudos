@@ -6,7 +6,7 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import it.pietroterracciano.kudos.Enums.ELayoutParam;
+import it.pietroterracciano.kudos.Enums.ELParam;
 import it.pietroterracciano.kudos.Enums.EWLayoutParam;
 import it.pietroterracciano.kudos.Utils.LayoutParams.LayoutParamsUtils;
 
@@ -51,29 +51,29 @@ public abstract class WindowUtils
     @Nullable
     public static Integer getLayoutParam(@Nullable Window w, @Nullable EWLayoutParam e)
     {
-        return w != null ? LayoutParamsUtils.get(w.getAttributes(), parseLayoutParam(e)) : null;
+        return w != null ? LayoutParamsUtils.getInt(w.getAttributes(), parseLayoutParam(e)) : null;
     }
 
     @Nullable
-    private static ELayoutParam parseLayoutParam(@Nullable EWLayoutParam e)
+    private static ELParam parseLayoutParam(@Nullable EWLayoutParam e)
     {
         if(e != null)
             switch (e)
             {
                 case X:
-                    return ELayoutParam.WindowX;
+                    return ELParam.WindowX;
                 case Y:
-                    return ELayoutParam.WindowY;
+                    return ELParam.WindowY;
                 case RotationAnimation:
-                    return ELayoutParam.WindowRotationAnimation;
+                    return ELParam.WindowRotationAnimation;
                 case Animations:
-                    return ELayoutParam.WindowAnimations;
+                    return ELParam.WindowAnimations;
                 case Gravity:
-                    return ELayoutParam.WindowGravity;
+                    return ELParam.WindowGravity;
                 case Width:
-                    return ELayoutParam.Width;
+                    return ELParam.Width;
                 case Height:
-                    return ELayoutParam.Height;
+                    return ELParam.Height;
             }
 
         return null;

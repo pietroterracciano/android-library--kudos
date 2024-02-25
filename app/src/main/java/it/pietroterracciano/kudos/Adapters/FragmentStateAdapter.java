@@ -43,7 +43,7 @@ public final class FragmentStateAdapter extends androidx.viewpager2.adapter.Frag
 
         synchronized (_oLock)
         {
-            int j = ListUtils.adse(_lItems, itm);
+            int j = ListUtils.adse(_lItems, itm, false);
             if(j < -1) return false;
             else if(j < 0) notifyItemInserted(_lItems.size() -1);
             else notifyItemChanged(j);

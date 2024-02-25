@@ -10,5 +10,6 @@ public enum EVLayoutParam
     MarginLeft,
     MarginEnd,
     MarginRight,
-    Weight
+    Weight,
+    Gravity
 }

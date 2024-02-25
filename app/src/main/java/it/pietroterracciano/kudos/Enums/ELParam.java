@@ -1,6 +1,6 @@
 package it.pietroterracciano.kudos.Enums;
 
-public enum ELayoutParam
+public enum ELParam
 {
     WindowAnimations,
     WindowRotationAnimation,
@@ -15,5 +15,6 @@ public enum ELayoutParam
     WindowGravity,
     WindowX,
     WindowY,
-    ViewWeight
+    ViewWeight,
+    ViewGravity
 }

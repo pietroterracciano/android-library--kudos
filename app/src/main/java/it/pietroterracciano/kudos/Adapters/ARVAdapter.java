@@ -13,16 +13,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import it.pietroterracciano.kudos.Constants.CClass;
-import it.pietroterracciano.kudos.Controllers.ThreadController;
 import it.pietroterracciano.kudos.Kudos;
 import it.pietroterracciano.kudos.R;
 import it.pietroterracciano.kudos.Utils.ArrayUtils;
 import it.pietroterracciano.kudos.Utils.ConstructorUtils;
-import it.pietroterracciano.kudos.Utils.LayoutManagerUtils;
 import it.pietroterracciano.kudos.Utils.ListUtils;
 import it.pietroterracciano.kudos.Utils.ObjectUtils;
-import it.pietroterracciano.kudos.Utils.TypesUtils.NumericUtils.intUtils;
-import it.pietroterracciano.kudos.Interfaces.IRVOnEndlessListener;
 import it.pietroterracciano.kudos.Layouts.RVItemLayout;
 import it.pietroterracciano.kudos.ViewHolders.RVViewHolder;
 
@@ -35,88 +31,28 @@ extends
 {
     @NonNull
     private static final RVItemLayout
-        __ilBlank = new RVItemLayout<>(Object.class, R.layout.recycler_view__item__blank, null);
+        __ilBlank = new RVItemLayout<>(Object.class, R.layout.recycler_view__item__blank);
     @NonNull
     private static final Constructor<RVViewHolder>
         __cnsViewHolder = ConstructorUtils.getDeclared(RVViewHolder.class, CClass.ViewGroup, RVItemLayout.class);
 
     @NonNull
     public final int TransientID;
+
     @NonNull
     private final Object _oLock;
-
     @NonNull
     private final List<Object> _lItems;
     @NonNull
     private final HashMap<Class<?>, Integer> _hmItemClasses2LayoutResourceIDs;
     @NonNull
     private final HashMap<Integer, RVItemLayout<?>> _hmLayoutResourceIDs2ItemLayouts;
-    @Nullable
-    private IRVOnEndlessListener _lsnOnEndless;
-    @NonNull
-    private int _iEndlessThreshold;
-    @NonNull
-    private RecyclerView x_oView;
-    @NonNull
-    private final RecyclerView.OnScrollListener _oOnScrollListener;
 
     public ARVAdapter()
     {
         TransientID = Kudos.newTransientID();
         _oLock = new Object();
         _lItems = new ArrayList<>();
-
-        _oOnScrollListener = new RecyclerView.OnScrollListener()
-        {
-            @Override
-            public void onScrolled(@NonNull RecyclerView rv, int dx, int dy)
-            {
-                rv.removeOnScrollListener(this);
-
-                super.onScrolled(rv, dx, dy);
-
-                IRVOnEndlessListener lst;
-                int iLastVisibleItemPosition, iItemCount, iEndlessThreshold;
-
-                synchronized (_oLock)
-                {
-                    iLastVisibleItemPosition = intUtils.from(LayoutManagerUtils.findLastVisibleItemPosition(x_oView.getLayoutManager()));
-                    iItemCount = getItemCount();
-                    iEndlessThreshold = _iEndlessThreshold;
-                    lst = _lsnOnEndless;
-                }
-
-                if(
-                    iLastVisibleItemPosition < iItemCount - iEndlessThreshold
-                    || lst == null
-                )
-                {
-                    rv.addOnScrollListener(this);
-                    return;
-                }
-
-                try  { lst.fg_onBeforeEndless(); } catch (Exception ignored){}
-
-                ThreadController.runOnBackground(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        try { lst.bg_onEndless(); } catch (Exception ignored) {}
-
-                        ThreadController.runOnForeground(new Runnable()
-                        {
-                            @Override
-                            public void run()
-                            {
-                                try { lst.fg_onAfterEndless(); } catch (Exception ignored) {}
-                                rv.addOnScrollListener(_oOnScrollListener);
-                            }
-                        });
-                    }
-                });
-            }
-        };
 
         _hmItemClasses2LayoutResourceIDs = new HashMap<>();
         _hmLayoutResourceIDs2ItemLayouts = new HashMap<>();
@@ -138,32 +74,6 @@ extends
 
     protected abstract void onItemLayoutsRegister(@NonNull List<RVItemLayout<?>> l);
 
-    @Override
-    public void onAttachedToRecyclerView(@NonNull RecyclerView v)
-    {
-        super.onAttachedToRecyclerView(v);
-        x_oView = v;
-        x_oView.addOnScrollListener(_oOnScrollListener);
-    }
-
-    @Override
-    public void onDetachedFromRecyclerView(@NonNull RecyclerView v)
-    {
-        x_oView.removeOnScrollListener(_oOnScrollListener);
-        super.onDetachedFromRecyclerView(v);
-    }
-
-    public AdapterType setEndlessThreshold(@NonNull int i)
-    {
-        _iEndlessThreshold = i > 0 ? i : 0;
-        return (AdapterType) this;
-    }
-    public AdapterType setOnEndlessListener(@Nullable IRVOnEndlessListener lst)
-    {
-        _lsnOnEndless = lst;
-        return (AdapterType) this;
-    }
-
     @NonNull
     public int indexOfItem(@Nullable Object oItem)
     {
@@ -183,31 +93,31 @@ extends
     }
 
     @NonNull
-    public boolean adseItem(@Nullable Object itm)
+    public boolean prependItem(@Nullable Object itm) { return apprItem(itm, true); }
+    @NonNull
+    public boolean appendItem(@Nullable Object itm) { return apprItem(itm, false); }
+    @NonNull
+    private boolean apprItem(@Nullable Object itm, boolean bPrepend)
     {
         if(itm == null)
             return false;
 
         synchronized (_oLock)
         {
-            int j = ListUtils.adse(_lItems, itm);
+            int j = ListUtils.adse(_lItems, itm, bPrepend);
             if(j < -1) return false;
-            else if(j < 0) notifyItemInserted(_lItems.size() -1);
+            else if(j < 0) notifyItemInserted(bPrepend ? 0 : getItemCount()-1);
             else notifyItemChanged(j);
             return true;
         }
     }
 
     @NonNull
-    public boolean removeLastItem()
-    {
-        return removeItem(getItemCount()-1);
-    }
+    public boolean removeFirstItem() { return removeItem(0); }
     @NonNull
-    public boolean removeItem(@Nullable Object itm)
-    {
-        return removeItem(indexOfItem(itm));
-    }
+    public boolean removeLastItem() { return removeItem(getItemCount()-1); }
+    @NonNull
+    public boolean removeItem(@Nullable Object itm) { return removeItem(indexOfItem(itm));}
     @NonNull
     public boolean removeItem(@NonNull int i)
     {
@@ -233,10 +143,7 @@ extends
     @NonNull
     public int getItemCount()
     {
-        synchronized (_oLock)
-        {
-            return _lItems.size();
-        }
+        return _lItems.size();
     }
 
     @Nullable
@@ -249,6 +156,10 @@ extends
     }
 
     @Nullable
+    public <ItemType> ItemType getFirstItem() { return getItem(0); }
+    @Nullable
+    public <ItemType> ItemType getLastItem() { return getItem(getItemCount()-1); }
+    @Nullable
     public <ItemType> ItemType getItem(@NonNull int i)
     {
         synchronized (_oLock)
@@ -260,9 +171,12 @@ extends
     @Nullable
     private Integer getItemViewType(@Nullable Object itm)
     {
+        if(itm == null)
+            return null;
+
         synchronized (_oLock)
         {
-            return itm != null ? _hmItemClasses2LayoutResourceIDs.get(itm.getClass()) : null;
+            return _hmItemClasses2LayoutResourceIDs.get(itm.getClass());
         }
     }
     @Override
@@ -282,7 +196,6 @@ extends
         }
     }
 
-
     @NonNull
     public RVViewHolder onCreateViewHolder(@NonNull ViewGroup vg, @NonNull @LayoutRes int i)
     {
@@ -293,11 +206,10 @@ extends
     @Override
     public void onBindViewHolder(@NonNull RVViewHolder vh, @NonNull int i)
     {
-        synchronized (_oLock)
-        {
-            Object itm = getItem(i);
-            if(itm == null || vh.ItemLayout.OnInvalidateItemXListener == null) return;
-            vh.ItemLayout.OnInvalidateItemXListener.invoke(vh.itemView, i, ObjectUtils.cast(itm));
-        }
+        Object itm = getItem(i);
+        if(vh.ItemLayout.OnInvalidateItemXListener == null) return;
+        vh.ItemLayout.OnInvalidateItemXListener.invoke(vh.itemView, i, ObjectUtils.cast(itm));
     }
+
+    //public abstract void onInvalidateItemLayoutX(View v, int i, Object o);
 }

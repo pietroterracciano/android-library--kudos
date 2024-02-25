@@ -11,14 +11,14 @@ public abstract class ListUtils
     @NonNull
     public static <T> int indexOf(@Nullable List<T> l, @Nullable T o)
     {
-        return indexLastIndexOf(l, o, false);
+        return l != null ? l.indexOf(o) : -2; // indexLastIndexOf(l, o, false);
     }
     @NonNull
     public static <T> int lastIndexOf(@Nullable List<T> l, @Nullable T o)
     {
-        return indexLastIndexOf(l, o, true);
+        return l != null ? l.lastIndexOf(o) : -2; //indexLastIndexOf(l, o, true);
     }
-    @NonNull
+    /*@NonNull
     private static <T> int indexLastIndexOf
     (
         @Nullable List<T> l,
@@ -43,37 +43,42 @@ public abstract class ListUtils
         }
 
         return k;
+    }*/
+
+    @NonNull
+    public static <T> int size(@Nullable List<T> l)
+    {
+        return l != null ? l.size() : -1;
     }
 
     @NonNull
-    public static <T> boolean add(@Nullable List<T> l, @Nullable T o)
+    public static <T> boolean add(@Nullable List<T> l, @Nullable T o, @NonNull boolean bOnHead)
     {
-        if(l == null)
-            return false;
-
-        l.add(o);
-        return true;
+        return add(l, bOnHead ? 0 : size(l), o);
+    }
+    @NonNull
+    public static <T> boolean add(@Nullable List<T> l, @NonNull int i, @Nullable T o)
+    {
+        if(!isValidIndex(l, i, true)) return false;
+        l.add(i, o); return true;
     }
 
     @NonNull
     public static <T> boolean set(@Nullable List<T> l, @NonNull int i, @Nullable T o)
     {
-        if(!isValidIndex(l, i))
-            return false;
-
-        l.set(i, o);
-        return true;
+        if(!isValidIndex(l, i)) return false;
+        l.set(i, o); return true;
     }
 
     @NonNull
-    public static <T> int adse(@Nullable List<T> l, @Nullable T o)
+    public static <T> int adse(@Nullable List<T> l, @Nullable T o, boolean bOnHead)
     {
         int i = indexOf(l, o);
 
         if(i < 0)
-            l.add(o);
+            add(l, o, bOnHead);
         else
-            l.set(i, o);
+            set(l, i, o);
 
         return i;
     }
@@ -90,19 +95,32 @@ public abstract class ListUtils
     @Nullable
     public static boolean remove(@Nullable List<?> l, @NonNull int i)
     {
-        if(!isValidIndex(l, i))
-            return false;
-
-        l.remove(i);
-        return true;
+        if(!isValidIndex(l, i)) return false;
+        l.remove(i); return true;
     }
 
     @NonNull
     public static boolean isValidIndex(@Nullable List<?> l, @NonNull int i)
     {
+        return isValidIndex(l, i, false);
+    }
+
+    @NonNull
+    private static boolean isValidIndex(@Nullable List<?> l, @NonNull int i, @NonNull boolean bOnAdd)
+    {
         return
-            l != null
-            && i > -1
-            && i < l.size();
+            i > -1
+            &&
+            (
+                (
+                    !bOnAdd
+                    && i < size(l)
+                )
+                ||
+                (
+                    bOnAdd
+                    && i <= size(l)
+                )
+            );
     }
 }

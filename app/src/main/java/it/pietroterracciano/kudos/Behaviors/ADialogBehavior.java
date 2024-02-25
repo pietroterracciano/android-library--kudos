@@ -183,10 +183,10 @@ public abstract class ADialogBehavior<DialogType extends ADialogBehavior<DialogT
         x_vInflated = onFindInflatedView(x_oViewGroup);
 
         if(!_bHasRWidth)
-            _iRWidth = intUtils.from(ViewUtils.getLayoutParam(x_vInflated, EVLayoutParam.Width));
+            _iRWidth = intUtils.from(ViewUtils.getLayoutParamInt(x_vInflated, EVLayoutParam.Width));
 
         if(!_bHasRHeight)
-            _iRHeight = intUtils.from(ViewUtils.getLayoutParam(x_vInflated, EVLayoutParam.Height));
+            _iRHeight = intUtils.from(ViewUtils.getLayoutParamInt(x_vInflated, EVLayoutParam.Height));
     }
 
     @Nullable

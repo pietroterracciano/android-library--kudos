@@ -7,7 +7,9 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import it.pietroterracciano.kudos.Enums.ELayoutParam;
+import it.pietroterracciano.kudos.Enums.ELParam;
+import it.pietroterracciano.kudos.Utils.TypesUtils.NumericUtils.IntegerUtils;
+import it.pietroterracciano.kudos.Utils.TypesUtils.NumericUtils.intUtils;
 
 public abstract class LayoutParamsUtils
 {
@@ -25,14 +27,81 @@ public abstract class LayoutParamsUtils
             );
     }
 
+    @Nullable
+    public static ViewGroup.LayoutParams clone(@Nullable ViewGroup.LayoutParams vglp)
+    {
+        if(vglp == null)
+            return null;
+
+        Integer i;
+        Float f;
+        ViewGroup.LayoutParams vglp0;
+
+        if(vglp instanceof WindowManager.LayoutParams)
+        {
+            vglp0 = new WindowManager.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+            i = getInt(vglp, ELParam.WindowAnimations);
+            if(i != null) set(vglp0, ELParam.WindowAnimations, i);
+            i = getInt(vglp, ELParam.WindowRotationAnimation);
+            if(i != null) set(vglp0, ELParam.WindowRotationAnimation, i);
+            i = getInt(vglp, ELParam.WindowGravity);
+            if(i != null) set(vglp0, ELParam.WindowGravity, i);
+            i = getInt(vglp, ELParam.WindowX);
+            if(i != null) set(vglp0, ELParam.WindowX, i);
+            i = getInt(vglp, ELParam.WindowY);
+            if(i != null) set(vglp0, ELParam.WindowY, i);
+        }
+        else if(vglp instanceof ViewGroup.MarginLayoutParams)
+        {
+            if(vglp instanceof LinearLayout.LayoutParams)
+            {
+                vglp0 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                i = getInt(vglp, ELParam.ViewGravity);
+                if(i != null) set(vglp0, ELParam.ViewGravity, i);
+                f = getFloat(vglp, ELParam.ViewWeight);
+                if(f != null) set(vglp0, ELParam.ViewWeight, f);
+            }
+            else
+                vglp0 = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+            i = getInt(vglp, ELParam.ViewMarginBottom);
+            if(i != null) set(vglp0, ELParam.ViewMarginBottom, i);
+            i = getInt(vglp, ELParam.ViewMarginTop);
+            if(i != null) set(vglp0, ELParam.ViewMarginTop, i);
+            i = getInt(vglp, ELParam.ViewMarginStart);
+            if(i != null) set(vglp0, ELParam.ViewMarginStart, i);
+            i = getInt(vglp, ELParam.ViewMarginEnd);
+            if(i != null) set(vglp0, ELParam.ViewMarginEnd, i);
+            i = getInt(vglp, ELParam.ViewMarginLeft);
+            if(i != null) set(vglp0, ELParam.ViewMarginLeft, i);
+            i = getInt(vglp, ELParam.ViewMarginRight);
+            if(i != null) set(vglp0, ELParam.ViewMarginRight, i);
+        }
+        else
+            vglp0 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        i = getInt(vglp, ELParam.Width);
+        if(i != null) set(vglp0, ELParam.Width, i);
+        i = getInt(vglp, ELParam.Height);
+        if(i != null) set(vglp0, ELParam.Height, i);
+
+        return vglp0;
+    }
+
     @NonNull
-    public static boolean set(@Nullable ViewGroup.LayoutParams vglp, @Nullable ELayoutParam e, @NonNull int i)
+    public static boolean set(@Nullable ViewGroup.LayoutParams vglp, @Nullable ELParam e, @NonNull float f)
     {
         if(vglp != null && e != null)
+        {
+            int i;
+
             switch (e)
             {
                 case Width:
                 case Height:
+                    i = intUtils.from(f);
                     i = normalizeWidthHeight(i);
 
                     switch (e)
@@ -58,6 +127,8 @@ public abstract class LayoutParamsUtils
                     ViewGroup.MarginLayoutParams
                             vgmlp = (ViewGroup.MarginLayoutParams)vglp;
 
+                    i = intUtils.from(f);
+
                     switch (e)
                     {
                         case ViewMarginBottom:
@@ -81,6 +152,7 @@ public abstract class LayoutParamsUtils
                     }
                     break;
                 case ViewWeight:
+                case ViewGravity:
                     if(!(vglp instanceof LinearLayout.LayoutParams))
                         return false;
 
@@ -90,8 +162,12 @@ public abstract class LayoutParamsUtils
                     switch (e)
                     {
                         case ViewWeight:
-                            if(lllp.weight == i) return false;
-                            lllp.weight = i; return true;
+                            if(lllp.weight == f) return false;
+                            lllp.weight = f; return true;
+                        case ViewGravity:
+                            i = intUtils.from(f);
+                            if(lllp.gravity == i) return false;
+                            lllp.gravity = i; return true;
                     }
                     break;
                 case WindowRotationAnimation:
@@ -104,6 +180,8 @@ public abstract class LayoutParamsUtils
 
                     WindowManager.LayoutParams
                         wmlp = (WindowManager.LayoutParams) vglp;
+
+                    i = intUtils.from(f);
 
                     switch (e)
                     {
@@ -125,20 +203,21 @@ public abstract class LayoutParamsUtils
                     }
                     break;
             }
+        }
 
         return false;
     }
 
     @Nullable
-    public static Integer get(@Nullable ViewGroup.LayoutParams vglp, @NonNull ELayoutParam e)
+    public static Float getFloat(@Nullable ViewGroup.LayoutParams vglp, @Nullable ELParam e)
     {
-        if(vglp != null)
+        if(vglp != null && e != null)
             switch (e)
             {
                 case Width:
-                    return vglp.width;
+                    return (float)vglp.width;
                 case Height:
-                    return vglp.height;
+                    return (float)vglp.height;
 
                 case ViewMarginBottom:
                 case ViewMarginEnd:
@@ -155,20 +234,21 @@ public abstract class LayoutParamsUtils
                     switch (e)
                     {
                         case ViewMarginBottom:
-                            return vgmlp.bottomMargin;
+                            return (float)vgmlp.bottomMargin;
                         case ViewMarginEnd:
-                            return vgmlp.getMarginEnd();
+                            return (float)vgmlp.getMarginEnd();
                         case ViewMarginRight:
-                            return vgmlp.rightMargin;
+                            return (float)vgmlp.rightMargin;
                         case ViewMarginStart:
-                            return vgmlp.getMarginStart();
+                            return (float)vgmlp.getMarginStart();
                         case ViewMarginLeft:
-                            return vgmlp.leftMargin;
+                            return (float)vgmlp.leftMargin;
                         case ViewMarginTop:
-                            return vgmlp.topMargin;
+                            return (float)vgmlp.topMargin;
                     }
                     break;
                 case ViewWeight:
+                case ViewGravity:
                     if(!(vglp instanceof LinearLayout.LayoutParams))
                         return null;
 
@@ -178,7 +258,9 @@ public abstract class LayoutParamsUtils
                     switch (e)
                     {
                         case ViewWeight:
-                            return 0;// lllp.weight;
+                            return (float)lllp.weight;
+                        case ViewGravity:
+                            return (float)lllp.gravity;
                     }
                     break;
                 case WindowRotationAnimation:
@@ -195,19 +277,25 @@ public abstract class LayoutParamsUtils
                     switch (e)
                     {
                         case WindowAnimations:
-                            return wmlp.windowAnimations;
+                            return (float)wmlp.windowAnimations;
                         case WindowRotationAnimation:
-                            return wmlp.rotationAnimation;
+                            return (float)wmlp.rotationAnimation;
                         case WindowGravity:
-                            return wmlp.gravity ;
+                            return (float)wmlp.gravity ;
                         case WindowX:
-                            return wmlp.x;
+                            return (float)wmlp.x;
                         case WindowY:
-                            return wmlp.y ;
+                            return (float)wmlp.y;
                     }
                     break;
             }
 
         return null;
+    }
+
+    @Nullable
+    public static Integer getInt(@Nullable ViewGroup.LayoutParams vglp, @Nullable ELParam e)
+    {
+        return IntegerUtils.from(getFloat(vglp, e));
     }
 }

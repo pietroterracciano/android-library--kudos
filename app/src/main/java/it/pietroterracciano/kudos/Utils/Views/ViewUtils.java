@@ -1,26 +1,72 @@
 package it.pietroterracciano.kudos.Utils.Views;
 
+import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import it.pietroterracciano.kudos.Enums.ELayoutParam;
+import it.pietroterracciano.kudos.Enums.ELParam;
 import it.pietroterracciano.kudos.Enums.EVLayoutParam;
-import it.pietroterracciano.kudos.Enums.EWLayoutParam;
+import it.pietroterracciano.kudos.Enums.EVVisibilityBound;
+import it.pietroterracciano.kudos.Enums.EVVisibilityOrientation;
+import it.pietroterracciano.kudos.Enums.EVVisibilityRect;
+import it.pietroterracciano.kudos.Utils.ArrayUtils;
 import it.pietroterracciano.kudos.Utils.LayoutParams.LayoutParamsUtils;
 
 public abstract class ViewUtils
 {
+    /*@NonNull
+    public static boolean setLayoutParams(@Nullable View vFrom, @Nullable View vTo)
+    {
+        return setLayoutParams(vTo, vFrom, false);
+    }*/
     @NonNull
-    public static boolean setLayoutParam(@Nullable View v, @Nullable EVLayoutParam e, int i)
+    public static boolean setLayoutParams(@Nullable View vFrom, @Nullable View vTo, boolean bClone)
+    {
+        return setLayoutParams(vTo, getLayoutParams(vFrom), bClone);
+    }
+    /*@NonNull
+    public static boolean setLayoutParams(@Nullable View v, @Nullable ViewGroup.LayoutParams vglp)
+    {
+        return setLayoutParams(v, vglp, false);
+    }*/
+    @NonNull
+    public static boolean setLayoutParams(@Nullable View v, @Nullable ViewGroup.LayoutParams vglp, boolean bClone)
+    {
+        if(v == null) return false;
+        if(bClone) vglp = LayoutParamsUtils.clone(vglp);
+        if(vglp == null) return false;
+        v.setLayoutParams(vglp);
+        return true;
+    }
+
+    @Nullable
+    public static ViewGroup.LayoutParams getLayoutParams(@Nullable View v)
+    {
+        return getLayoutParams(v, false);
+    }
+    @Nullable
+    public static ViewGroup.LayoutParams getLayoutParams(@Nullable View v, boolean bClone)
+    {
+        return v != null
+            ?
+            (
+                bClone
+                    ? LayoutParamsUtils.clone(v.getLayoutParams())
+                    : v.getLayoutParams()
+            )
+            :
+                null;
+    }
+
+    @NonNull
+    public static boolean setLayoutParam(@Nullable View v, @Nullable EVLayoutParam e, float f)
     {
         if(
             v == null
-            || !LayoutParamsUtils.set(v.getLayoutParams(), parseLayoutParam(e), i)
+            || !LayoutParamsUtils.set(v.getLayoutParams(), parseLayoutParam(e), f)
         )
             return false;
 
@@ -29,37 +75,133 @@ public abstract class ViewUtils
     }
 
     @Nullable
-    public static Integer getLayoutParam(@Nullable View v, @Nullable EVLayoutParam e)
+    public static Integer getLayoutParamInt(@Nullable View v, @Nullable EVLayoutParam e)
     {
-        return v != null ? LayoutParamsUtils.get(v.getLayoutParams(), parseLayoutParam(e)) : null;
+        return v != null ? LayoutParamsUtils.getInt(v.getLayoutParams(), parseLayoutParam(e)) : null;
     }
 
     @Nullable
-    private static ELayoutParam parseLayoutParam(@Nullable EVLayoutParam e)
+    public static Float getLayoutParamFloat(@Nullable View v, @Nullable EVLayoutParam e)
+    {
+        return v != null ? LayoutParamsUtils.getFloat(v.getLayoutParams(), parseLayoutParam(e)) : null;
+    }
+
+    @Nullable
+    private static ELParam parseLayoutParam(@Nullable EVLayoutParam e)
     {
         if(e != null)
             switch (e)
             {
                 case MarginBottom:
-                    return ELayoutParam.ViewMarginBottom;
+                    return ELParam.ViewMarginBottom;
                 case MarginRight:
-                    return ELayoutParam.ViewMarginRight;
+                    return ELParam.ViewMarginRight;
                 case MarginStart:
-                    return ELayoutParam.ViewMarginStart;
+                    return ELParam.ViewMarginStart;
                 case MarginTop:
-                    return ELayoutParam.ViewMarginTop;
+                    return ELParam.ViewMarginTop;
                 case MarginEnd:
-                    return ELayoutParam.ViewMarginEnd;
+                    return ELParam.ViewMarginEnd;
                 case MarginLeft:
-                    return ELayoutParam.ViewMarginLeft;
+                    return ELParam.ViewMarginLeft;
                 case Weight:
-                    return ELayoutParam.ViewWeight;
+                    return ELParam.ViewWeight;
                 case Width:
-                    return ELayoutParam.Width;
+                    return ELParam.Width;
                 case Height:
-                    return ELayoutParam.Height;
+                    return ELParam.Height;
+                case Gravity:
+                    return ELParam.ViewGravity;
             }
 
         return null;
+    }
+
+    @Nullable
+    public static View find
+    (
+        @Nullable EVVisibilityOrientation evo,
+        @Nullable EVVisibilityRect evr,
+        @Nullable EVVisibilityBound evb,
+        @Nullable View... a
+    )
+    {
+        if
+        (
+            evo == null
+            || evr == null
+            || evb == null
+            || !ArrayUtils.isValidIndex(a, 0)
+        )
+            return null;
+        else if(a.length < 2)
+            return a[0];
+
+        int j;
+
+        Rect
+            rv = null,
+            ri = new Rect();
+
+        View
+            v = null;
+
+        for(int i=0; i<a.length; i++)
+        {
+            if(a[i] == null)
+                continue;
+
+            switch (evr)
+            {
+                case Local:
+                    a[i].getLocalVisibleRect(ri);
+                    break;
+                case Global:
+                    a[i].getGlobalVisibleRect(ri);
+                    break;
+                default:
+                    continue;
+            }
+
+            if(rv == null)
+            {
+                v = a[i];
+                rv = new Rect(ri);
+            }
+
+            switch (evo)
+            {
+                case Horizontal:
+                    j = rv.width() - ri.width();
+                    break;
+                case Vertical:
+                    j = rv.height() - ri.height();
+                    break;
+                default:
+                    continue;
+            }
+
+            switch (evb)
+            {
+                case More:
+                    if(j < 0)
+                    {
+                        rv = new Rect(ri);
+                        v = a[i];
+                    }
+                    break;
+                case Less:
+                    if(j > 0)
+                    {
+                        rv = new Rect(ri);
+                        v = a[i];
+                    }
+                    break;
+                default:
+                    continue;
+            }
+        }
+
+        return v;
     }
 }
