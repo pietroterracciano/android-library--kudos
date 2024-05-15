@@ -19,18 +19,18 @@ public final class RecyclerView extends androidx.recyclerview.widget.RecyclerVie
     public RecyclerView(@NonNull Context context)
     {
         super(context);
-        Behavior =RecyclerViewBehavior.from(this);
+        Behavior = RecyclerViewBehavior.from(this);
     }
 
     public RecyclerView(@NonNull Context context, @Nullable AttributeSet attrs)
     {
         super(context, attrs);
-        Behavior =RecyclerViewBehavior.from(this);
+        Behavior = RecyclerViewBehavior.from(this);
     }
 
     public RecyclerView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
-        Behavior =RecyclerViewBehavior.from(this);
+        Behavior = RecyclerViewBehavior.from(this);
     }
 }

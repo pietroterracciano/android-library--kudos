@@ -55,7 +55,7 @@ public class VP2TLManager
         _mTabLayout.setOnTabSelectedUnselectedListener(lst);
     }
     @Nullable
-    public TabLayout.Tab adseFragmentClass(Class<? extends Fragment> cls)
+    public TabLayout.Tab adseFragmentClass(@Nullable Class<? extends Fragment> cls)
     {
         boolean b = _mViewPager2.adseFragmentClass(cls);
         TabLayout.Tab tlt = _mTabLayout.adseTab(cls);

@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 public abstract class intUtils
 {
     @NonNull
-    public static int from(Float f) { return from(IntegerUtils.from(f)); }
+    public static int from(@Nullable Float f) { return from(IntegerUtils.from(f)); }
     @NonNull
     public static int from(@NonNull float f) { return (int)f; }
     @NonNull

@@ -19,10 +19,4 @@ public class MotionEventModel
         Action = me.getActionMasked();
         EventTime = me.getEventTime();
     }
-
-    /*@Nullable
-    public static MotionEventModel from(@Nullable MotionEvent me)
-    {
-        return me != null ? new MotionEventModel(me) : null;
-    }*/
 }

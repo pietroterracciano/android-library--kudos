@@ -16,7 +16,7 @@ public abstract class HumanTimeUtils
         __dDaysDivisor = __dHoursDivisor * 24d;
 
     @Nullable
-    public static String from(Date oDate)
+    public static String from(@Nullable Date oDate)
     {
         if(oDate == null)
             return null;

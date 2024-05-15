@@ -3,6 +3,7 @@ package it.pietroterracciano.kudos.Utils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.HashMap;
@@ -15,12 +16,12 @@ public abstract class DimensionUtils
             _hmTValues2Values2Pixels = new HashMap<>();
 
     @Nullable
-    public static Float parse2Pixels(float f, int i)
+    public static Float parse2Pixels(@NonNull float f, @NonNull int i)
     {
         return parse2Pixels(Kudos.getDisplayMetrics(), f, i);
     }
     @Nullable
-    public static Float parse2Pixels(DisplayMetrics dm, float f, int i)
+    public static Float parse2Pixels(@NonNull DisplayMetrics dm, @NonNull float f, @NonNull int i)
     {
         if(dm == null)
             return null;

@@ -3,6 +3,7 @@ package it.pietroterracciano.kudos.Managers;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.lang.reflect.Constructor;
@@ -29,9 +30,11 @@ public class MotionEventManager
         _mem1,
         _mem2;
 
+    @NonNull
     private int
         _iTapsCount;
 
+    @NonNull
     private boolean
         _bAreCoordinatesFixed;
 
