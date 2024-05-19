@@ -5,5 +5,7 @@ import androidx.annotation.NonNull;
 public abstract class CString
 {
     @NonNull
-    public static final String Empty = "";
+    public static final String
+            Comma = ",",
+            Empty = "";
 }

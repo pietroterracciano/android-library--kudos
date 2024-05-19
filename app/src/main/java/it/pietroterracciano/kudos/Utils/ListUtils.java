@@ -3,6 +3,8 @@ package it.pietroterracciano.kudos.Utils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,6 +20,15 @@ public abstract class ListUtils
     {
         return l != null ? l.lastIndexOf(o) : -2; //indexLastIndexOf(l, o, true);
     }
+
+    @Nullable
+    public static <T> List<T> from(@Nullable T... a)
+    {
+        if(a != null)
+            try { return Arrays.asList(a); } catch (Exception ignored) {}
+        return null;
+    }
+
     /*@NonNull
     private static <T> int indexLastIndexOf
     (
