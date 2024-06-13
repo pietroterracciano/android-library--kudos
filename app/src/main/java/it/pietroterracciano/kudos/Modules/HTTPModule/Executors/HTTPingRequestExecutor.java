@@ -18,21 +18,20 @@ import java.util.List;
 import java.util.Map;
 
 import it.pietroterracciano.kudos.Constants.CString;
-import it.pietroterracciano.kudos.Modules.HTTPModule.Constants.CHTTPContentType;
+import it.pietroterracciano.kudos.Controllers.ThreadController;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Constants.CHTTPHeader;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Enums.EHTTPCharset;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Enums.EHTTPConnection;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Enums.EHTTPContentType;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Enums.EHTTPMethod;
+import it.pietroterracciano.kudos.Modules.HTTPModule.Listeners.IHTTPingOnResponseReceiveListener;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Payloads.AHTTPingPayload;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Types.HTTPingResponse;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Utils.HTTPingConnectionUtils;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Utils.HTTPingContentTypeUtils;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Utils.HTTPingMethodUtils;
-import it.pietroterracciano.kudos.Utils.BaseTypes.StringUtils;
 import it.pietroterracciano.kudos.Utils.Connections.HttpURLConnectionUtils;
 import it.pietroterracciano.kudos.Utils.ConstructorUtils;
-import it.pietroterracciano.kudos.Utils.ListUtils;
 import it.pietroterracciano.kudos.Utils.MethodUtils;
 import it.pietroterracciano.kudos.Utils.StreamUtils;
 import it.pietroterracciano.kudos.Utils.Connections.URLConnectionUtils;
@@ -140,6 +139,19 @@ public final class HTTPingRequestExecutor
             URLConnectionUtils.setRequestProperty(urlc, CHTTPHeader.ContentLength, CString.Zero);
 
         return ConstructorUtils.newInstance(_chttpingresponse, _httpurlc);
+    }
+
+    public final void executeAsync(@Nullable IHTTPingOnResponseReceiveListener lst)
+    {
+        ThreadController.runOnBackground(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                HTTPingResponse httpingr = execute();
+                if(lst != null) lst.onResponseReceive(httpingr);
+            }
+        });
     }
 
     public final HTTPingRequestExecutor addPayload(@Nullable AHTTPingPayload<?> httpingp)
