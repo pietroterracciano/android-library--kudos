@@ -8,8 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import it.pietroterracciano.kudos.Enums.ELParam;
-import it.pietroterracciano.kudos.Utils.TypesUtils.NumericUtils.IntegerUtils;
-import it.pietroterracciano.kudos.Utils.TypesUtils.NumericUtils.intUtils;
+import it.pietroterracciano.kudos.Utils.BaseTypes.NumericUtils.IntegerUtils;
+import it.pietroterracciano.kudos.Utils.BaseTypes.NumericUtils.intUtils;
 
 public abstract class LayoutParamsUtils
 {
@@ -101,7 +101,7 @@ public abstract class LayoutParamsUtils
             {
                 case Width:
                 case Height:
-                    i = intUtils.from(f);
+                    i = intUtils.convert(f);
                     i = normalizeWidthHeight(i);
 
                     switch (e)
@@ -127,7 +127,7 @@ public abstract class LayoutParamsUtils
                     ViewGroup.MarginLayoutParams
                             vgmlp = (ViewGroup.MarginLayoutParams)vglp;
 
-                    i = intUtils.from(f);
+                    i = intUtils.convert(f);
 
                     switch (e)
                     {
@@ -165,7 +165,7 @@ public abstract class LayoutParamsUtils
                             if(lllp.weight == f) return false;
                             lllp.weight = f; return true;
                         case ViewGravity:
-                            i = intUtils.from(f);
+                            i = intUtils.convert(f);
                             if(lllp.gravity == i) return false;
                             lllp.gravity = i; return true;
                     }
@@ -181,7 +181,7 @@ public abstract class LayoutParamsUtils
                     WindowManager.LayoutParams
                         wmlp = (WindowManager.LayoutParams) vglp;
 
-                    i = intUtils.from(f);
+                    i = intUtils.convert(f);
 
                     switch (e)
                     {
@@ -296,6 +296,6 @@ public abstract class LayoutParamsUtils
     @Nullable
     public static Integer getInt(@Nullable ViewGroup.LayoutParams vglp, @Nullable ELParam e)
     {
-        return IntegerUtils.from(getFloat(vglp, e));
+        return IntegerUtils.convert(getFloat(vglp, e));
     }
 }

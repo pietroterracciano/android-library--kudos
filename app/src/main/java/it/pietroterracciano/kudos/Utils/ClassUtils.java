@@ -8,6 +8,8 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+import it.pietroterracciano.kudos.Utils.Collections.ArrayUtils;
+
 public abstract class ClassUtils
 {
     @Nullable

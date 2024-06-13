@@ -15,7 +15,7 @@ import java.util.List;
 import it.pietroterracciano.kudos.Constants.CClass;
 import it.pietroterracciano.kudos.Kudos;
 import it.pietroterracciano.kudos.R;
-import it.pietroterracciano.kudos.Utils.ArrayUtils;
+import it.pietroterracciano.kudos.Utils.Collections.ArrayUtils;
 import it.pietroterracciano.kudos.Utils.ConstructorUtils;
 import it.pietroterracciano.kudos.Utils.ListUtils;
 import it.pietroterracciano.kudos.Utils.ObjectUtils;

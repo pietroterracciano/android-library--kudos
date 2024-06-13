@@ -1,4 +1,4 @@
-package it.pietroterracciano.kudos.Utils;
+package it.pietroterracciano.kudos.Utils.Collections;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

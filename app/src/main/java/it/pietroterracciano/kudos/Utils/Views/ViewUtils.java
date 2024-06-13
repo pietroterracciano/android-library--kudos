@@ -12,7 +12,7 @@ import it.pietroterracciano.kudos.Enums.EVLayoutParam;
 import it.pietroterracciano.kudos.Enums.EVVisibilityBound;
 import it.pietroterracciano.kudos.Enums.EVVisibilityOrientation;
 import it.pietroterracciano.kudos.Enums.EVVisibilityRect;
-import it.pietroterracciano.kudos.Utils.ArrayUtils;
+import it.pietroterracciano.kudos.Utils.Collections.ArrayUtils;
 import it.pietroterracciano.kudos.Utils.LayoutParams.LayoutParamsUtils;
 
 public abstract class ViewUtils

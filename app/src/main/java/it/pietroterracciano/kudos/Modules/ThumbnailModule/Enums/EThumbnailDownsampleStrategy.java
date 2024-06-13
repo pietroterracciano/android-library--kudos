@@ -1,6 +1,6 @@
 package it.pietroterracciano.kudos.Modules.ThumbnailModule.Enums;
 
-public enum ETNDownsampleStrategy
+public enum EThumbnailDownsampleStrategy
 {
     CenterCrop,
     CircleCrop,

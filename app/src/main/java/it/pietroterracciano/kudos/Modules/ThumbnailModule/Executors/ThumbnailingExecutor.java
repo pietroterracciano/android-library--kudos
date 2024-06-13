@@ -1,4 +1,4 @@
-package it.pietroterracciano.kudos.Modules.ThumbnailModule.Handlers;
+package it.pietroterracciano.kudos.Modules.ThumbnailModule.Executors;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -19,12 +19,12 @@ import com.bumptech.glide.request.target.Target;
 
 import it.pietroterracciano.kudos.Controllers.ThreadController;
 import it.pietroterracciano.kudos.Kudos;
-import it.pietroterracciano.kudos.Modules.ThumbnailModule.Enums.ETNDownsampleStrategy;
-import it.pietroterracciano.kudos.Modules.ThumbnailModule.Listeners.ITHOnGenericActionListener;
-import it.pietroterracciano.kudos.Modules.ThumbnailModule.Listeners.ITHOnDrawableActionListener;
+import it.pietroterracciano.kudos.Modules.ThumbnailModule.Enums.EThumbnailDownsampleStrategy;
+import it.pietroterracciano.kudos.Modules.ThumbnailModule.Listeners.IThumbnailingOnGenericActionListener;
+import it.pietroterracciano.kudos.Modules.ThumbnailModule.Listeners.IThumbnailingOnDrawableActionListener;
 import it.pietroterracciano.kudos.Utils.Views.ImageViewUtils;
 
-public class ThumbnailChain
+public class ThumbnailingExecutor
 {
     @Nullable
     private Context
@@ -54,7 +54,7 @@ public class ThumbnailChain
         _eDiskCacheStrategy;
 
     @Nullable
-    private ETNDownsampleStrategy
+    private EThumbnailDownsampleStrategy
         _eDownsampleStrategy;
 
     @Nullable
@@ -63,12 +63,12 @@ public class ThumbnailChain
         _bIsAutoloadDrawableEnabled;
 
     @Nullable
-    private ITHOnGenericActionListener
+    private IThumbnailingOnGenericActionListener
         _lstOnStart,
         _lstOnEnd;
 
     @Nullable
-    private ITHOnDrawableActionListener
+    private IThumbnailingOnDrawableActionListener
         _lstOnFail,
         _lstOnSuccess;
 
@@ -81,54 +81,54 @@ public class ThumbnailChain
         _oRequestOptions;
 
     @NonNull
-    public ThumbnailChain setContext(@Nullable Context cnt) { _oContext = cnt; return this; }
+    public ThumbnailingExecutor setContext(@Nullable Context cnt) { _oContext = cnt; return this; }
 
     @NonNull
-    public ThumbnailChain setURI(@Nullable String s) { _sURI = s; return this; }
+    public ThumbnailingExecutor setURI(@Nullable String s) { _sURI = s; return this; }
 
     @NonNull
-    public ThumbnailChain setTimeout(@Nullable @IntRange(from = 0) Integer i) { _iTimeout = i; return this; }
+    public ThumbnailingExecutor setTimeout(@Nullable @IntRange(from = 0) Integer i) { _iTimeout = i; return this; }
 
     @NonNull
-    public ThumbnailChain setSize(@Nullable @IntRange(from = 0) Integer i, @Nullable @IntRange(from = 0) Integer j) { _iWidth = i; _iHeight = j; return this; }
+    public ThumbnailingExecutor setSize(@Nullable @IntRange(from = 0) Integer i, @Nullable @IntRange(from = 0) Integer j) { _iWidth = i; _iHeight = j; return this; }
 
     @NonNull
-    public ThumbnailChain setCompressFormat(@Nullable Bitmap.CompressFormat e) { _eCompressFormat = e; return this; }
+    public ThumbnailingExecutor setCompressFormat(@Nullable Bitmap.CompressFormat e) { _eCompressFormat = e; return this; }
 
     @NonNull
-    public ThumbnailChain setTarget(@Nullable ImageView iv) { x_ivTarget = iv; return this; }
+    public ThumbnailingExecutor setTarget(@Nullable ImageView iv) { x_ivTarget = iv; return this; }
 
     @NonNull
-    public ThumbnailChain isAutoloadDrawableEnabled(@Nullable Boolean b) { _bIsAutoloadDrawableEnabled = b; return this; }
+    public ThumbnailingExecutor isAutoloadDrawableEnabled(@Nullable Boolean b) { _bIsAutoloadDrawableEnabled = b; return this; }
 
     @NonNull
-    public ThumbnailChain setDownsampleStrategy(@Nullable ETNDownsampleStrategy e) {  _eDownsampleStrategy = e; return this; }
+    public ThumbnailingExecutor setDownsampleStrategy(@Nullable EThumbnailDownsampleStrategy e) {  _eDownsampleStrategy = e; return this; }
 
     @NonNull
-    public ThumbnailChain setQuality(@Nullable @IntRange(from = 0, to = 100) Integer i) {  _iQuality = i; return this; }
+    public ThumbnailingExecutor setQuality(@Nullable @IntRange(from = 0, to = 100) Integer i) {  _iQuality = i; return this; }
 
     @NonNull
-    public ThumbnailChain setDiskCacheStrategy(@Nullable DiskCacheStrategy e) { _eDiskCacheStrategy = e; return this; }
+    public ThumbnailingExecutor setDiskCacheStrategy(@Nullable DiskCacheStrategy e) { _eDiskCacheStrategy = e; return this; }
 
     @NonNull
-    public ThumbnailChain isMemoryCacheEnabled(@Nullable Boolean b) {  _bIsMemoryCacheEnabled = b; return this; }
+    public ThumbnailingExecutor isMemoryCacheEnabled(@Nullable Boolean b) {  _bIsMemoryCacheEnabled = b; return this; }
 
     @NonNull
-    public ThumbnailChain setDrawableOnFail(@Nullable Drawable drw) { _drwOnFail = drw; return this;}
+    public ThumbnailingExecutor setDrawableOnFail(@Nullable Drawable drw) { _drwOnFail = drw; return this;}
 
     @NonNull
-    public ThumbnailChain onFail(@Nullable ITHOnDrawableActionListener lst) { _lstOnFail = lst; return this;}
+    public ThumbnailingExecutor onFail(@Nullable IThumbnailingOnDrawableActionListener lst) { _lstOnFail = lst; return this;}
     @NonNull
-    public ThumbnailChain onSuccess(@Nullable ITHOnDrawableActionListener lst) { _lstOnSuccess = lst; return this;}
+    public ThumbnailingExecutor onSuccess(@Nullable IThumbnailingOnDrawableActionListener lst) { _lstOnSuccess = lst; return this;}
 
     @NonNull
-    public ThumbnailChain onStart(@Nullable ITHOnGenericActionListener lst) { _lstOnStart = lst; return this;}
+    public ThumbnailingExecutor onStart(@Nullable IThumbnailingOnGenericActionListener lst) { _lstOnStart = lst; return this;}
     @NonNull
-    public ThumbnailChain onEnd(@Nullable ITHOnGenericActionListener lst) { _lstOnEnd = lst; return this;}
+    public ThumbnailingExecutor onEnd(@Nullable IThumbnailingOnGenericActionListener lst) { _lstOnEnd = lst; return this;}
 
-    private ThumbnailChain() {}
+    private ThumbnailingExecutor() {}
 
-    public void process()
+    public void execute()
     {
         ThreadController.runOnBackground(new Runnable()
         {
@@ -278,7 +278,7 @@ public class ThumbnailChain
         });
     }
 
-    private static void invokeDrawableActionListener(@Nullable ImageView iv, @Nullable Drawable drw, @Nullable ITHOnDrawableActionListener lst)
+    private static void invokeDrawableActionListener(@Nullable ImageView iv, @Nullable Drawable drw, @Nullable IThumbnailingOnDrawableActionListener lst)
     {
         if(lst == null) return;
 
@@ -291,7 +291,7 @@ public class ThumbnailChain
         });
     }
 
-    private static void invokeGenericActionListener(@Nullable ImageView iv, @Nullable ITHOnGenericActionListener lst)
+    private static void invokeGenericActionListener(@Nullable ImageView iv, @Nullable IThumbnailingOnGenericActionListener lst)
     {
         if(lst == null) return;
         try { lst.onAction(iv); } catch (Exception ignored) {}

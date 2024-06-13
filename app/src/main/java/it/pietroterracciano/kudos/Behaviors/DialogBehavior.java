@@ -7,10 +7,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import it.pietroterracciano.kudos.Enums.EVLayoutParam;
-import it.pietroterracciano.kudos.Utils.TypesUtils.NumericUtils.intUtils;
-import it.pietroterracciano.kudos.Utils.Views.ViewUtils;
-
 public class DialogBehavior extends ADialogBehavior<DialogBehavior>
 {
     protected DialogBehavior(@NonNull Dialog dlg)
