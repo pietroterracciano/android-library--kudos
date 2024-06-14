@@ -13,27 +13,33 @@ extends
     AHTTPingPayload<ApplicationJsonHTTPingPayload>
 {
     @Nullable
-    private Object _o;
+    private final Object _o;
     @Nullable
-    private JSONing _jsoning;
+    private final JSONing _jsoning;
 
-    public ApplicationJsonHTTPingPayload() { super(EHTTPContentType.ApplicationJson); }
-    @NonNull
-    public ApplicationJsonHTTPingPayload setValue(@Nullable Object o) { _o = o; return this; }
-    @NonNull
-    public ApplicationJsonHTTPingPayload setJSONing(@Nullable JSONing jsoning) { _jsoning = jsoning; return this; }
+    public ApplicationJsonHTTPingPayload(@Nullable Object o)
+    {
+        this(o, JSONing.Default);
+    }
+    public ApplicationJsonHTTPingPayload(@Nullable Object o, @Nullable JSONing jsoning)
+    {
+        super(EHTTPContentType.ApplicationJson);
+        _o = o;
+        _jsoning = jsoning;
+    }
 
     @Override
     @Nullable
     protected byte[] _onWrite()
     {
-        if(_jsoning == null)
-            _jsoning = JSONing.Default;
-
         return
-            bytesUtils.convert
-            (
-                _jsoning.serialize(_o)
-            );
+            _jsoning != null
+            ?
+                bytesUtils.convert
+                (
+                    _jsoning.serialize(_o)
+                )
+            :
+                null;
     }
 }

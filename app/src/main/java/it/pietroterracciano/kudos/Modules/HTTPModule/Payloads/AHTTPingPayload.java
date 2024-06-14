@@ -10,6 +10,7 @@ import it.pietroterracciano.kudos.Utils.StreamUtils;
 
 public abstract class AHTTPingPayload<PayloadType extends AHTTPingPayload<PayloadType>>
 {
+    @NonNull
     public final EHTTPContentType ContentType;
     public AHTTPingPayload(@NonNull EHTTPContentType ehttpct) { ContentType = ehttpct;}
     @NonNull

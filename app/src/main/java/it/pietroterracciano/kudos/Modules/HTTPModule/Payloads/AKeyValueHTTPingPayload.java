@@ -17,16 +17,21 @@ extends
         AHTTPingPayload<PayloadType>
 {
     @Nullable
-    private String _sk;
+    private final String _sk;
     @Nullable
-    private ObjectType _ov;
+    private final ObjectType _ov;
 
-    public AKeyValueHTTPingPayload(@NonNull EHTTPContentType ehttpct) { super(ehttpct); }
-
-    @NonNull
-    public final PayloadType setKey(@Nullable String sk) {_sk = sk; return (PayloadType)this; }
-    @NonNull
-    public final PayloadType setValue(@Nullable ObjectType ov) { _ov = ov; return (PayloadType)this; }
+    public AKeyValueHTTPingPayload
+    (
+        @Nullable String sk,
+        @Nullable ObjectType ov,
+        @NonNull EHTTPContentType ehttpct
+    )
+    {
+        super(ehttpct);
+        _sk = sk;
+        _ov = ov;
+    }
 
     @Override
     @Nullable

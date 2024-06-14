@@ -16,7 +16,10 @@ public final class
 extends
     ACharsettizedKeyValueHTTPingPayload<ApplicationXWwwUrlEncodedHTTPingPayload, String>
 {
-    public ApplicationXWwwUrlEncodedHTTPingPayload() {  super(EHTTPContentType.ApplicationXWwwFormUrlEncoded); }
+    public ApplicationXWwwUrlEncodedHTTPingPayload(@Nullable String sk, @Nullable String sv, @Nullable Charset ec)
+    {
+        super(sk, sv, ec, EHTTPContentType.ApplicationXWwwFormUrlEncoded);
+    }
 
     @Override
     @Nullable
@@ -24,7 +27,7 @@ extends
     (
         @Nullable String sk,
         @Nullable String sv,
-        @NonNull Charset ec
+        @Nullable Charset ec
     )
     {
         if(sk == null)

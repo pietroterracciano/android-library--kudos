@@ -18,15 +18,29 @@ extends
         AHTTPingPayload<PayloadType>
 {
     @Nullable
-    private Charset _ec;
+    private final Charset _ec;
 
-    public ACharsettizedHTTPingPayload(@NonNull EHTTPContentType ehttpct) { super(ehttpct); }
-    @NonNull
-    public final PayloadType setCharset(@Nullable Charset ec) { _ec = ec; return (PayloadType)this; }
+    public ACharsettizedHTTPingPayload
+    (
+        @NonNull EHTTPContentType ehttpct
+    )
+    {
+        this(StandardCharsets.UTF_8, ehttpct);
+    }
+
+    public ACharsettizedHTTPingPayload
+    (
+        @Nullable Charset ec,
+        @NonNull EHTTPContentType ehttpct
+    )
+    {
+        super(ehttpct);
+        _ec = ec;
+    }
 
     @Override
     @Nullable
-    protected final byte[] _onWrite() { return _onWrite(_ec != null ? _ec : StandardCharsets.UTF_8); }
+    protected final byte[] _onWrite() { return _onWrite(_ec); }
     @Nullable
-    protected abstract byte[] _onWrite(@NonNull Charset ec);
+    protected abstract byte[] _onWrite(@Nullable Charset ec);
 }

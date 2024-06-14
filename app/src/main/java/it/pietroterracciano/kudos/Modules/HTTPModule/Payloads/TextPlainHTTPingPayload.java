@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import it.pietroterracciano.kudos.Modules.HTTPModule.Enums.EHTTPContentType;
 import it.pietroterracciano.kudos.Utils.Collections.Primitives.bytesUtils;
@@ -14,16 +15,21 @@ extends
     ACharsettizedHTTPingPayload<TextPlainHTTPingPayload>
 {
     @Nullable
-    private String _sv;
+    private final String _sv;
 
-    public TextPlainHTTPingPayload() { super(EHTTPContentType.TextPlain); }
-
-    @NonNull
-    public final TextPlainHTTPingPayload setValue(@Nullable String sv) { _sv = sv; return this; }
+    public TextPlainHTTPingPayload(@Nullable String sv)
+    {
+        this(sv, StandardCharsets.UTF_8);
+    }
+    public TextPlainHTTPingPayload(@Nullable String sv, @Nullable Charset ec)
+    {
+        super(ec, EHTTPContentType.TextPlain);
+        _sv = sv;
+    }
 
     @Override
     @Nullable
-    protected final byte[] _onWrite(@NonNull Charset ec)
+    protected final byte[] _onWrite(@Nullable Charset ec)
     {
         return bytesUtils.convert(_sv, ec);
     }

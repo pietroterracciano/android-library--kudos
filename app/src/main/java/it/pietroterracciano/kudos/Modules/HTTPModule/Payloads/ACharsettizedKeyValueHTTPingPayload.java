@@ -16,22 +16,38 @@ public abstract class
         ObjectType
     >
 extends
-        AKeyValueHTTPingPayload<PayloadType, ObjectType>
+    AKeyValueHTTPingPayload<PayloadType, ObjectType>
 {
     @Nullable
-    private Charset _ec;
+    private final Charset _ec;
 
-    public ACharsettizedKeyValueHTTPingPayload(@NonNull EHTTPContentType ehttpct) { super(ehttpct); }
-
-    @NonNull
-    public final PayloadType setCharset(@Nullable Charset ec) { _ec = ec; return (PayloadType)this; }
+    public ACharsettizedKeyValueHTTPingPayload
+    (
+        @Nullable String sk,
+        @Nullable ObjectType ov,
+        @NonNull EHTTPContentType ehttpct
+    )
+    {
+        this(sk, ov, StandardCharsets.UTF_8, ehttpct);
+    }
+    public ACharsettizedKeyValueHTTPingPayload
+    (
+        @Nullable String sk,
+        @Nullable ObjectType ov,
+        @Nullable Charset ec,
+        @NonNull EHTTPContentType ehttpct
+    )
+    {
+        super(sk, ov, ehttpct);
+        _ec = ec;
+    }
 
     @Override
     @Nullable
     protected final byte[] _onWrite(@Nullable String sk, @Nullable ObjectType ov)
     {
-        return _onWrite(sk, ov, _ec != null ? _ec : StandardCharsets.UTF_8);
+        return _onWrite(sk, ov, _ec);
     }
     @Nullable
-    protected abstract byte[] _onWrite(@Nullable String sk, @Nullable ObjectType ov, @NonNull Charset ec);
+    protected abstract byte[] _onWrite(@Nullable String sk, @Nullable ObjectType ov, @Nullable Charset ec);
 }
