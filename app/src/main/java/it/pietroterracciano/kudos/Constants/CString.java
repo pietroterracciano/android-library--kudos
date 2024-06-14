@@ -2,7 +2,7 @@ package it.pietroterracciano.kudos.Constants;
 
 import androidx.annotation.NonNull;
 
-import it.pietroterracciano.kudos.Utils.BaseTypes.StringUtils;
+import it.pietroterracciano.kudos.Utils.DataTypes.StringUtils;
 
 public abstract class CString
 {

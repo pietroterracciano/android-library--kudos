@@ -3,13 +3,10 @@ package it.pietroterracciano.kudos.Utils;
 import androidx.annotation.Nullable;
 
 import java.net.URI;
-import java.util.Arrays;
 
 import it.pietroterracciano.kudos.Constants.CCharacter;
-import it.pietroterracciano.kudos.Constants.CStream;
 import it.pietroterracciano.kudos.Constants.CString;
-import it.pietroterracciano.kudos.Utils.BaseTypes.StringUtils;
-import it.pietroterracciano.kudos.Utils.Collections.ArrayUtils;
+import it.pietroterracciano.kudos.Utils.DataTypes.StringUtils;
 
 public final class URIUtils
 {

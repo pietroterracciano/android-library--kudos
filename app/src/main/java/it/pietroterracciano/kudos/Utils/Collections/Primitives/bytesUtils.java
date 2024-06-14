@@ -8,14 +8,11 @@ import androidx.annotation.Nullable;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-import it.pietroterracciano.kudos.Constants.CClass;
 import it.pietroterracciano.kudos.Constants.CStream;
-import it.pietroterracciano.kudos.Utils.BaseTypes.StringUtils;
-import it.pietroterracciano.kudos.Utils.Collections.ArrayUtils;
+import it.pietroterracciano.kudos.Utils.DataTypes.StringUtils;
 import it.pietroterracciano.kudos.Utils.Collections.NonPrimitives.BytesUtils;
 import it.pietroterracciano.kudos.Utils.StreamUtils;
 

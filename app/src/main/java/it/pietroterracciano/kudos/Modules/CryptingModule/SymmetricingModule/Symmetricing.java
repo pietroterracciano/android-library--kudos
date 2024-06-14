@@ -7,8 +7,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Type;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
@@ -16,15 +14,12 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import it.pietroterracciano.kudos.Constants.CClass;
 import it.pietroterracciano.kudos.Modules.CryptingModule.SymmetricingModule.Builders.SymmetricingBuilder;
 import it.pietroterracciano.kudos.Modules.CryptingModule.SymmetricingModule.Descriptors.SymmetricingDescriptor;
 import it.pietroterracciano.kudos.Modules.CryptingModule.SymmetricingModule.Enums.ESymmetricAlgorithm;
 import it.pietroterracciano.kudos.Modules.CryptingModule.SymmetricingModule.Utils.SymmetricAlgorithmUtils;
 import it.pietroterracciano.kudos.Modules.JSONingModule.JSONing;
-import it.pietroterracciano.kudos.Utils.BaseTypes.StringUtils;
-import it.pietroterracciano.kudos.Utils.Collections.ArrayUtils;
-import it.pietroterracciano.kudos.Utils.Collections.NonPrimitives.BytesUtils;
+import it.pietroterracciano.kudos.Utils.DataTypes.StringUtils;
 import it.pietroterracciano.kudos.Utils.Collections.Primitives.bytesUtils;
 import it.pietroterracciano.kudos.Utils.ConstructorUtils;
 

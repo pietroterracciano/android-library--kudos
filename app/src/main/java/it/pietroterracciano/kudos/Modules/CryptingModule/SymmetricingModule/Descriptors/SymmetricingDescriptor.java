@@ -7,7 +7,7 @@ import java.nio.charset.Charset;
 
 import javax.crypto.spec.SecretKeySpec;
 
-import it.pietroterracciano.kudos.Utils.BaseTypes.StringUtils;
+import it.pietroterracciano.kudos.Utils.DataTypes.StringUtils;
 
 public final class SymmetricingDescriptor
 {

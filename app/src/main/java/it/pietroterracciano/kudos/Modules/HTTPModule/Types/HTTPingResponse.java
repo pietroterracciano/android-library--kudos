@@ -8,7 +8,8 @@ import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Map;
 
-import it.pietroterracciano.kudos.Utils.BaseTypes.StringUtils;
+import it.pietroterracciano.kudos.Controllers.ThreadController;
+import it.pietroterracciano.kudos.Utils.DataTypes.StringUtils;
 
 public final class HTTPingResponse
 {
@@ -105,6 +106,17 @@ public final class HTTPingResponse
         catch (Exception ignored) { return _isc = -1; }
     }
 
+    public void disconnectAsync()
+    {
+        ThreadController.runOnBackground(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                disconnect();
+            }
+        });
+    }
     public boolean disconnect()
     {
         try { _httpurlc.disconnect(); return true; }

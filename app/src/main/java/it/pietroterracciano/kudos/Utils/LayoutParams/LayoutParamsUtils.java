@@ -8,8 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import it.pietroterracciano.kudos.Enums.ELParam;
-import it.pietroterracciano.kudos.Utils.BaseTypes.NumericUtils.IntegerUtils;
-import it.pietroterracciano.kudos.Utils.BaseTypes.NumericUtils.intUtils;
+import it.pietroterracciano.kudos.Utils.DataTypes.NumericUtils.NonPrimitives.IntegerUtils;
+import it.pietroterracciano.kudos.Utils.DataTypes.NumericUtils.Primitives.integerUtils;
 
 public abstract class LayoutParamsUtils
 {
@@ -101,7 +101,7 @@ public abstract class LayoutParamsUtils
             {
                 case Width:
                 case Height:
-                    i = intUtils.convert(f);
+                    i = integerUtils.convert(f);
                     i = normalizeWidthHeight(i);
 
                     switch (e)
@@ -127,7 +127,7 @@ public abstract class LayoutParamsUtils
                     ViewGroup.MarginLayoutParams
                             vgmlp = (ViewGroup.MarginLayoutParams)vglp;
 
-                    i = intUtils.convert(f);
+                    i = integerUtils.convert(f);
 
                     switch (e)
                     {
@@ -165,7 +165,7 @@ public abstract class LayoutParamsUtils
                             if(lllp.weight == f) return false;
                             lllp.weight = f; return true;
                         case ViewGravity:
-                            i = intUtils.convert(f);
+                            i = integerUtils.convert(f);
                             if(lllp.gravity == i) return false;
                             lllp.gravity = i; return true;
                     }
@@ -181,7 +181,7 @@ public abstract class LayoutParamsUtils
                     WindowManager.LayoutParams
                         wmlp = (WindowManager.LayoutParams) vglp;
 
-                    i = intUtils.convert(f);
+                    i = integerUtils.convert(f);
 
                     switch (e)
                     {

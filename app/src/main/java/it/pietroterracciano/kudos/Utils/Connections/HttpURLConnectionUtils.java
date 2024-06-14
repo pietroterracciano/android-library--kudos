@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 import java.net.HttpURLConnection;
 import java.net.URLConnection;
 
-import it.pietroterracciano.kudos.Utils.BaseTypes.StringUtils;
+import it.pietroterracciano.kudos.Utils.DataTypes.StringUtils;
 
 public final class HttpURLConnectionUtils
 {

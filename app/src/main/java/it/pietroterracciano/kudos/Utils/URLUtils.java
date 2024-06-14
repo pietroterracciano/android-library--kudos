@@ -8,7 +8,7 @@ import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-import it.pietroterracciano.kudos.Utils.BaseTypes.StringUtils;
+import it.pietroterracciano.kudos.Utils.DataTypes.StringUtils;
 
 public final class URLUtils
 {

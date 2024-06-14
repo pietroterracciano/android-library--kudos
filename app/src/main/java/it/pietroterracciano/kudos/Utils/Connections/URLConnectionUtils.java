@@ -7,8 +7,7 @@ import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
 
-import it.pietroterracciano.kudos.Modules.HTTPModule.Constants.CHTTPHeader;
-import it.pietroterracciano.kudos.Utils.BaseTypes.StringUtils;
+import it.pietroterracciano.kudos.Utils.DataTypes.StringUtils;
 
 public final class URLConnectionUtils
 {

@@ -1,9 +1,11 @@
-package it.pietroterracciano.kudos.Utils.BaseTypes.NumericUtils;
+package it.pietroterracciano.kudos.Utils.DataTypes.NumericUtils.Primitives;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public abstract class intUtils
+import it.pietroterracciano.kudos.Utils.DataTypes.NumericUtils.NonPrimitives.IntegerUtils;
+
+public abstract class integerUtils
 {
     @NonNull
     public static int convert(@Nullable Integer i) { return i != null ? i : 0; }
