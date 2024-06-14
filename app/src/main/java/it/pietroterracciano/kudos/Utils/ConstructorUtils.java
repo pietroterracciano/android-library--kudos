@@ -22,7 +22,7 @@ public abstract class ConstructorUtils
     }
 
     @Nullable
-    public static <T> T newInstance(@Nullable Constructor<T> cns, @Nullable Object... a)
+    public static <T> T createInstance(@Nullable Constructor<T> cns, @Nullable Object... a)
     {
         if(cns != null)
             try { return cns.newInstance(a); } catch (Exception ignored) {}

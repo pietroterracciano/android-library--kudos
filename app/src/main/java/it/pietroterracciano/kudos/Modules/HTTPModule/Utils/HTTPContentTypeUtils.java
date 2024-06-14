@@ -5,13 +5,11 @@ import androidx.annotation.Nullable;
 
 import java.util.HashMap;
 
-import it.pietroterracciano.kudos.Modules.HTTPModule.Constants.CHTTPConnection;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Constants.CHTTPContentType;
-import it.pietroterracciano.kudos.Modules.HTTPModule.Enums.EHTTPConnection;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Enums.EHTTPContentType;
 
 
-public final class HTTPingContentTypeUtils
+public final class HTTPContentTypeUtils
 {
     @NonNull
     private static final HashMap<String, EHTTPContentType>
@@ -22,12 +20,12 @@ public final class HTTPingContentTypeUtils
 
     static
     {
-        _hmS2E = new HashMap<>(2);
+        _hmS2E = new HashMap<>(4);
         _hmS2E.put(CHTTPContentType.TextPlain, EHTTPContentType.TextPlain);
         _hmS2E.put(CHTTPContentType.ApplicationJson, EHTTPContentType.ApplicationJson);
         _hmS2E.put(CHTTPContentType.ApplicationXWwwFormUrlEncoded, EHTTPContentType.ApplicationXWwwFormUrlEncoded);
         _hmS2E.put(CHTTPContentType.MultipartFormData, EHTTPContentType.MultipartFormData);
-        _hmE2S = new HashMap<>(2);
+        _hmE2S = new HashMap<>(4);
         _hmE2S.put(EHTTPContentType.TextPlain, CHTTPContentType.TextPlain);
         _hmE2S.put(EHTTPContentType.ApplicationJson, CHTTPContentType.ApplicationJson);
         _hmE2S.put(EHTTPContentType.ApplicationXWwwFormUrlEncoded, CHTTPContentType.ApplicationXWwwFormUrlEncoded);

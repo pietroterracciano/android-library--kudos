@@ -3,13 +3,9 @@ package it.pietroterracciano.kudos.Modules.HTTPModule.Payloads;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.io.OutputStream;
-
-import it.pietroterracciano.kudos.Modules.HTTPModule.Constants.CHTTPContentType;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Enums.EHTTPContentType;
 import it.pietroterracciano.kudos.Modules.JSONingModule.JSONing;
-import it.pietroterracciano.kudos.Utils.Collections.BytesUtils;
-import it.pietroterracciano.kudos.Utils.StreamUtils;
+import it.pietroterracciano.kudos.Utils.Collections.Primitives.bytesUtils;
 
 public final class
     ApplicationJsonHTTPingPayload
@@ -35,7 +31,7 @@ extends
             _jsoning = JSONing.Default;
 
         return
-            BytesUtils.convert
+            bytesUtils.convert
             (
                 _jsoning.serialize(_o)
             );

@@ -52,7 +52,7 @@ public class MotionEventManager
         if(me == null)
             return;
 
-        MotionEventModel mem = ConstructorUtils.newInstance(_cnsMotionEventModel, me);
+        MotionEventModel mem = ConstructorUtils.createInstance(_cnsMotionEventModel, me);
 
         if(mem == null)
             return;
@@ -124,7 +124,7 @@ public class MotionEventManager
     @Nullable
     public TouchEventModel buildTouch()
     {
-        return ConstructorUtils.newInstance(_cnsTouchEventModel, _mem0, _mem1, _etea0, _iTapsCount);
+        return ConstructorUtils.createInstance(_cnsTouchEventModel, _mem0, _mem1, _etea0, _iTapsCount);
     }
 
     private static ETEAction parseAction2TEAction(int i)

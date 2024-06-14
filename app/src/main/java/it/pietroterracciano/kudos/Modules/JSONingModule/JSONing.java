@@ -58,7 +58,7 @@ public final class JSONing
     }
 
     @Nullable
-    public <T> T deserialize(String s, TypeToken<T> tt)
+    public <T> T deserialize(@Nullable TypeToken<T> tt, @Nullable String s)
     {
         if(s != null && tt != null)
             try {return _gson.fromJson(s, tt); }
@@ -68,7 +68,7 @@ public final class JSONing
     }
 
     @Nullable
-    public <T> T deserialize(String s, Class<T> cls)
+    public <T> T deserialize(@Nullable Class<T> cls, @Nullable String s)
     {
         if(s != null && cls != null)
             try {return _gson.fromJson(s, cls); }
@@ -78,7 +78,7 @@ public final class JSONing
     }
 
     @Nullable
-    public <T> T deserialize(String s, Type t)
+    public <T> T deserialize(@Nullable Type t, @Nullable String s)
     {
         if(s != null && t != null)
             try {return _gson.fromJson(s, t); }

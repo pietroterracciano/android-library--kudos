@@ -16,6 +16,6 @@ public abstract class Thumbnailing
     @NonNull
     public static ThumbnailingExecutor requireExecutor()
     {
-        return ConstructorUtils.newInstance(_cnste);
+        return ConstructorUtils.createInstance(_cnste);
     }
 }

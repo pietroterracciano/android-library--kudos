@@ -200,7 +200,7 @@ extends
     public RVViewHolder onCreateViewHolder(@NonNull ViewGroup vg, @NonNull @LayoutRes int i)
     {
         RVItemLayout<?> il = getItemLayout(i);
-        return ConstructorUtils.newInstance(__cnsViewHolder, vg, il != null ? il : __ilBlank);
+        return ConstructorUtils.createInstance(__cnsViewHolder, vg, il != null ? il : __ilBlank);
     }
 
     @Override

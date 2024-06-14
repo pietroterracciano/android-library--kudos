@@ -1,5 +1,7 @@
 package it.pietroterracciano.kudos.Utils.BaseTypes;
 
+import android.util.Base64;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -8,8 +10,10 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.net.URI;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import it.pietroterracciano.kudos.Constants.CStream;
+import it.pietroterracciano.kudos.Utils.Collections.Primitives.bytesUtils;
 import it.pietroterracciano.kudos.Utils.StreamUtils;
 
 public abstract class StringUtils
@@ -34,7 +38,17 @@ public abstract class StringUtils
     public static String convert(@Nullable Character c) { return c != null ? convert(c.charValue()) : null; }
     @Nullable
     public static String convert(@Nullable char c) { try { return Character.toString(c); } catch (Exception ignored) {} return null; }
+    @Nullable
+    public static String convert(@Nullable byte[] ba) { return convert(ba, StandardCharsets.UTF_8); }
+    @Nullable
+    public static String convert(@Nullable byte[] ba, @Nullable Charset ec)
+    {
+        if(ba != null && ec != null)
+            try { return new String(ba, ec); }
+            catch (Exception ignored) {}
 
+        return null;
+    }
     @NonNull
     public static boolean isNull(@Nullable String s) { return s == null; }
     @NonNull
@@ -122,5 +136,51 @@ public abstract class StringUtils
             sb != null
                 ? sb.toString()
                 : null;
+    }
+
+    @Nullable
+    public static String convertToBase64(@Nullable String s)
+    {
+        return convertToBase64(s, StandardCharsets.UTF_8);
+    }
+    @Nullable
+    public static String convertToBase64(@Nullable String s, @Nullable Charset ec)
+    {
+        return s != null && ec != null
+            ? convertToBase64(bytesUtils.convert(s, ec))
+            : null;
+    }
+    @Nullable
+    public static String convertToBase64(@Nullable byte[] ba)
+    {
+        if(ba != null)
+            try { return Base64.encodeToString(ba, Base64.DEFAULT); }
+            catch (Exception ignored) {}
+
+        return null;
+    }
+
+    @Nullable
+    public static String convertFromBase64(@Nullable String s)
+    {
+        return convert(bytesUtils.convertFromBase64(s));
+    }
+
+    @Nullable
+    public static String convertFromBase64(@Nullable String s, Charset ec)
+    {
+        return convert(bytesUtils.convertFromBase64(s, ec));
+    }
+
+    @Nullable
+    public static String convertFromBase64(@Nullable byte[] ba)
+    {
+        return convert(bytesUtils.convertFromBase64(ba));
+    }
+
+    @Nullable
+    public static String convertFromBase64(@Nullable byte[] ba, Charset ec)
+    {
+        return convert(bytesUtils.convertFromBase64(ba), ec);
     }
 }

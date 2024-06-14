@@ -68,7 +68,7 @@ public final class FragmentStateAdapter extends androidx.viewpager2.adapter.Frag
                 Constructor<? extends Fragment>
                     cns = ConstructorUtils.getDeclared(cls);
 
-                frg = ConstructorUtils.newInstance(cns);
+                frg = ConstructorUtils.createInstance(cns);
             }
             else
                 frg = null;

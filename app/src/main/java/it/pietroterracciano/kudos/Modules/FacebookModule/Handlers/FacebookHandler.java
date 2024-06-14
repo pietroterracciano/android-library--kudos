@@ -33,7 +33,7 @@ public class FacebookHandler
     {
         synchronized (_ol)
         {
-            if(__fssoh == null) __fssoh = ConstructorUtils.newInstance(__cfssoh);
+            if(__fssoh == null) __fssoh = ConstructorUtils.createInstance(__cfssoh);
             return __fssoh;
         }
     }
@@ -43,7 +43,7 @@ public class FacebookHandler
     {
         synchronized (_ol)
         {
-            if(__fgh == null) __fgh = ConstructorUtils.newInstance(__cfgh);
+            if(__fgh == null) __fgh = ConstructorUtils.createInstance(__cfgh);
             return __fgh;
         }
     }

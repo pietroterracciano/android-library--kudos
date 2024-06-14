@@ -3,13 +3,10 @@ package it.pietroterracciano.kudos.Modules.HTTPModule.Payloads;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.io.OutputStream;
 import java.nio.charset.Charset;
 
-import it.pietroterracciano.kudos.Modules.HTTPModule.Constants.CHTTPContentType;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Enums.EHTTPContentType;
-import it.pietroterracciano.kudos.Utils.Collections.BytesUtils;
-import it.pietroterracciano.kudos.Utils.StreamUtils;
+import it.pietroterracciano.kudos.Utils.Collections.Primitives.bytesUtils;
 
 public final class
     TextPlainHTTPingPayload
@@ -28,6 +25,6 @@ extends
     @Nullable
     protected final byte[] _onWrite(@NonNull Charset ec)
     {
-        return BytesUtils.convert(_sv, ec);
+        return bytesUtils.convert(_sv, ec);
     }
 }

@@ -22,7 +22,7 @@ public class FacebookSSOHandler
     @NonNull
     public IFacebookSSOChain prepareChain()
     {
-        return ConstructorUtils.newInstance(__cfssoc);
+        return ConstructorUtils.createInstance(__cfssoc);
     }
 
     @Nullable

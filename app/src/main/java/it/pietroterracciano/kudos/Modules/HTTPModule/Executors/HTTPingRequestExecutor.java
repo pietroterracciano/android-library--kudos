@@ -27,9 +27,9 @@ import it.pietroterracciano.kudos.Modules.HTTPModule.Enums.EHTTPMethod;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Listeners.IHTTPingOnResponseReceiveListener;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Payloads.AHTTPingPayload;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Types.HTTPingResponse;
-import it.pietroterracciano.kudos.Modules.HTTPModule.Utils.HTTPingConnectionUtils;
-import it.pietroterracciano.kudos.Modules.HTTPModule.Utils.HTTPingContentTypeUtils;
-import it.pietroterracciano.kudos.Modules.HTTPModule.Utils.HTTPingMethodUtils;
+import it.pietroterracciano.kudos.Modules.HTTPModule.Utils.HTTPConnectionUtils;
+import it.pietroterracciano.kudos.Modules.HTTPModule.Utils.HTTPContentTypeUtils;
+import it.pietroterracciano.kudos.Modules.HTTPModule.Utils.HTTPMethodUtils;
 import it.pietroterracciano.kudos.Utils.Connections.HttpURLConnectionUtils;
 import it.pietroterracciano.kudos.Utils.ConstructorUtils;
 import it.pietroterracciano.kudos.Utils.MethodUtils;
@@ -124,21 +124,20 @@ public final class HTTPingRequestExecutor
             URLConnectionUtils.setRequestProperty(urlc, meHeader.getKey(), meHeader.getValue());
         }
 
-        URLConnectionUtils.setRequestProperty(urlc, CHTTPHeader.Connection, HTTPingConnectionUtils.convert(_ehttpcnn));
-        URLConnectionUtils.setRequestProperty(urlc, CHTTPHeader.ContentType, HTTPingContentTypeUtils.convert(_ehttpct));
+        URLConnectionUtils.setRequestProperty(urlc, CHTTPHeader.Connection, HTTPConnectionUtils.convert(_ehttpcnn));
+        URLConnectionUtils.setRequestProperty(urlc, CHTTPHeader.ContentType, HTTPContentTypeUtils.convert(_ehttpct));
 
         _httpurlc = HttpURLConnectionUtils.convert(urlc);
         if(_httpurlc == null) return null;
 
-        try { _httpurlc.setInstanceFollowRedirects(false); }
-        catch (Exception ignored) {}
 
-        HttpURLConnectionUtils.setRequestMethod(_httpurlc, HTTPingMethodUtils.convert(_ehttpm));
+        HttpURLConnectionUtils.setInstanceFollowRedirects(_httpurlc, false);
+        HttpURLConnectionUtils.setRequestMethod(_httpurlc, HTTPMethodUtils.convert(_ehttpm));
 
         if(!_writeOnOutputStream())
             URLConnectionUtils.setRequestProperty(urlc, CHTTPHeader.ContentLength, CString.Zero);
 
-        return ConstructorUtils.newInstance(_chttpingresponse, _httpurlc);
+        return ConstructorUtils.createInstance(_chttpingresponse, _httpurlc);
     }
 
     public final void executeAsync(@Nullable IHTTPingOnResponseReceiveListener lst)
@@ -191,14 +190,18 @@ public final class HTTPingRequestExecutor
                 return false;
         }
 
-        Iterator<AHTTPingPayload<?>>
-            itr = _lhttpingp.iterator();
+        int j = _lhttpingp.size();
 
+        for(int i=0; i<j; i++)
+            MethodUtils.invoke(_lhttpingp.get(i), _mhttpingp_write, os);
+
+        /*
         while(itr.hasNext())
         {
-            Boolean b = MethodUtils.invoke(itr.next(), _mhttpingp_write, os);
-            if( b == null || !b) continue;
-        }
+            MethodUtils.invoke(itr.next(), _mhttpingp_write, os);
+            //Boolean b = MethodUtils.invoke(itr.next(), _mhttpingp_write, os);
+            //if( b == null || !b) continue;
+        }*/
 
         return StreamUtils.close(os);
     }

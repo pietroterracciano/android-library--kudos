@@ -18,6 +18,6 @@ public class GoogleSSOHandler
     @NonNull
     public GoogleSSORequestChain prepareRequestChain()
     {
-        return ConstructorUtils.newInstance(__cgssoc);
+        return ConstructorUtils.createInstance(__cgssoc);
     }
 }

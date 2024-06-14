@@ -17,6 +17,6 @@ public final class HTTPing
     @NonNull
     public static HTTPingRequestExecutor requireRequestExecutor()
     {
-        return ConstructorUtils.newInstance(_chttpingre);
+        return ConstructorUtils.createInstance(_chttpingre);
     }
 }

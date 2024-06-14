@@ -8,7 +8,7 @@ import java.util.HashMap;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Constants.CHTTPConnection;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Enums.EHTTPConnection;
 
-public final class HTTPingConnectionUtils
+public final class HTTPConnectionUtils
 {
     @NonNull
     private static final HashMap<String, EHTTPConnection>

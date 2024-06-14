@@ -18,6 +18,6 @@ public class FacebookGraphHandler
     @NonNull
     public FacebookGraphChain prepareChain()
     {
-        return ConstructorUtils.newInstance(__cfgc);
+        return ConstructorUtils.createInstance(__cfgc);
     }
 }

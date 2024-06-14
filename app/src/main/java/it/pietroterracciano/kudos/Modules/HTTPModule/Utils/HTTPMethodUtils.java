@@ -8,7 +8,7 @@ import java.util.HashMap;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Constants.CHTTPMethod;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Enums.EHTTPMethod;
 
-public final class HTTPingMethodUtils
+public final class HTTPMethodUtils
 {
     @NonNull
     private static final HashMap<String, EHTTPMethod>
@@ -19,14 +19,14 @@ public final class HTTPingMethodUtils
 
     static
     {
-        _hmS2E = new HashMap<>(2);
+        _hmS2E = new HashMap<>(6);
         _hmS2E.put(CHTTPMethod.Get, EHTTPMethod.Get);
         _hmS2E.put(CHTTPMethod.Post, EHTTPMethod.Post);
         _hmS2E.put(CHTTPMethod.Delete, EHTTPMethod.Delete);
         _hmS2E.put(CHTTPMethod.Put, EHTTPMethod.Put);
         _hmS2E.put(CHTTPMethod.Options, EHTTPMethod.Options);
         _hmS2E.put(CHTTPMethod.Head, EHTTPMethod.Head);
-        _hmE2S = new HashMap<>(2);
+        _hmE2S = new HashMap<>(6);
         _hmE2S.put(EHTTPMethod.Get, CHTTPMethod.Get);
         _hmE2S.put(EHTTPMethod.Post, CHTTPMethod.Post);
         _hmE2S.put(EHTTPMethod.Delete, CHTTPMethod.Delete);

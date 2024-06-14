@@ -26,7 +26,7 @@ public class GoogleHandler
     {
         synchronized (_ol)
         {
-            if(__gssoh == null) __gssoh = ConstructorUtils.newInstance(__cgssoh);
+            if(__gssoh == null) __gssoh = ConstructorUtils.createInstance(__cgssoh);
             return __gssoh;
         }
     }

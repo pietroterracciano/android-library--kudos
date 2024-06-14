@@ -7,9 +7,8 @@ import androidx.annotation.Nullable;
 import java.nio.charset.Charset;
 
 import it.pietroterracciano.kudos.Constants.CCharacter;
-import it.pietroterracciano.kudos.Modules.HTTPModule.Constants.CHTTPContentType;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Enums.EHTTPContentType;
-import it.pietroterracciano.kudos.Utils.Collections.BytesUtils;
+import it.pietroterracciano.kudos.Utils.Collections.Primitives.bytesUtils;
 import it.pietroterracciano.kudos.Utils.URLUtils;
 
 public final class
@@ -37,7 +36,7 @@ extends
             return null;
 
         return
-            BytesUtils.convert
+            bytesUtils.convert
             (
              sk + CCharacter.Equal + sv,
                 ec

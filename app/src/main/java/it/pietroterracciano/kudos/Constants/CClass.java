@@ -8,6 +8,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.nio.charset.Charset;
 import java.util.HashMap;
 
 import it.pietroterracciano.kudos.Models.MotionEventModel;
@@ -32,4 +33,12 @@ public abstract class CClass
     public static final Class<TabLayout> TabLayout = TabLayout.class;
     @NonNull
     public static final Class<MotionEventModel> MotionEventModel = MotionEventModel.class;
+    @NonNull
+    public static final Class<Byte> Byte = Byte.class;
+    @NonNull
+    public static final Class<Byte[]> BytesArray = Byte[].class;
+    @NonNull
+    public static final Class<Charset> Charset = Charset.class;
+    @NonNull
+    public static final Class<String> String = String.class;
 }
