@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.credentials.ClearCredentialStateRequest;
 import androidx.credentials.CredentialManager;
 import androidx.credentials.GetCredentialRequest;
 import androidx.credentials.GetCredentialResponse;
@@ -14,6 +15,7 @@ import it.pietroterracciano.kudos.Controllers.ThreadController;
 import it.pietroterracciano.kudos.Kudos;
 import it.pietroterracciano.kudos.Modules.GoogleModule.SingleSignOnModule.Interfaces.IGoogleSSORequestChain;
 import it.pietroterracciano.kudos.Modules.GoogleModule.SingleSignOnModule.Interfaces.IGoogleSSORequestChainOnResult;
+import kotlin.Unit;
 import kotlin.coroutines.Continuation;
 import kotlin.coroutines.CoroutineContext;
 import kotlin.coroutines.EmptyCoroutineContext;
@@ -27,11 +29,16 @@ implements
     private Activity
         _act;
     @NonNull
-    private static GetGoogleIdOption.Builder
+    private final GetGoogleIdOption.Builder
         _ggidob;
     @NonNull
-    private static Continuation<GetCredentialResponse>
+    private final Continuation<GetCredentialResponse>
         _cgcr;
+
+    @NonNull
+    private final Continuation<Unit>
+        _cu;
+
     @Nullable
     private boolean
         _bIsAutoNonceEnabled;
@@ -43,6 +50,21 @@ implements
     {
         _ggidob = new GetGoogleIdOption.Builder();
         _cgcr = new Continuation<GetCredentialResponse>()
+        {
+            @NonNull
+            @Override
+            public CoroutineContext getContext()
+            {
+                return EmptyCoroutineContext.INSTANCE;
+            }
+
+            @Override
+            public void resumeWith(@NonNull Object o)
+            {
+                onResult_onResumeWith(o);
+            }
+        };
+        _cu = new Continuation<Unit>()
         {
             @NonNull
             @Override
@@ -79,7 +101,7 @@ implements
     @Override
     public IGoogleSSORequestChain isFilterByAuthorizedAccountsEnabled(@NonNull boolean b)
     {
-        try { _ggidob.setFilterByAuthorizedAccounts(b);} catch (Exception ignored){}
+        try { _ggidob.setFilterByAuthorizedAccounts(b); } catch (Exception ignored){}
         return this;
     }
 
@@ -151,6 +173,8 @@ implements
 
         if(cm == null)
             return;
+
+        try { cm.clearCredentialState(new ClearCredentialStateRequest(), _cu); } catch (Exception ignored) {}
 
         try
         {

@@ -1,8 +1,6 @@
 package it.pietroterracciano.kudos.Controllers;
 
-import android.app.Application;
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +8,15 @@ import android.view.ViewGroup;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
-import it.pietroterracciano.kudos.Controllers.ServiceController;
+import java.lang.reflect.Constructor;
+
 import it.pietroterracciano.kudos.Kudos;
+import it.pietroterracciano.kudos.Utils.ConstructorUtils;
+import it.pietroterracciano.kudos.Utils.Views.ViewUtils;
 
-public abstract class LayoutController
+public abstract class LayoutInflaterController
 {
     @Nullable
     public static LayoutInflater getService()
@@ -49,5 +51,23 @@ public abstract class LayoutController
             }
 
         return null;
+    }
+
+    @Nullable
+    public static <T extends Fragment> View inflate(@Nullable ViewGroup x_vg, Class<T> cls, boolean bAttach2vg)
+    {
+        if(x_vg == null || cls == null) return null;
+        LayoutInflater li = getService();
+        if(li == null) return null;
+        Constructor<T> cns =  ConstructorUtils.getDeclared(cls);
+        if(cns == null) return null;
+        T t = ConstructorUtils.createInstance(cns);
+        if(t == null) return null;
+        View x_v = t.onCreateView(li, x_vg, null);
+        if(x_v == null) return null;
+        t.onViewCreated(x_v, null);
+        if(!bAttach2vg) return x_v;
+        ViewUtils.addChild(x_vg, x_v);
+        return x_v;
     }
 }

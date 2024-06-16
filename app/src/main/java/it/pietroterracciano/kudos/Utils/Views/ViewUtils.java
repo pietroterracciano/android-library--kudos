@@ -8,6 +8,7 @@ import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import it.pietroterracciano.kudos.Enums.ELParam;
 import it.pietroterracciano.kudos.Enums.EVLayoutParam;
@@ -218,5 +219,14 @@ public abstract class ViewUtils
         }
 
         return v;
+    }
+
+    @NonNull
+    public static boolean addChild(@Nullable ViewGroup x_vg, @Nullable View x_v)
+    {
+        if(x_vg != null && x_v != null)
+            try { x_vg.addView(x_v); return true; } catch (Exception ignored) {}
+
+        return false;
     }
 }
