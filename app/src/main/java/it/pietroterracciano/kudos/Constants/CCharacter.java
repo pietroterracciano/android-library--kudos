@@ -9,6 +9,8 @@ public final class CCharacter
         Equal = '=',
         Slash = '/',
         Comma = ',',
+        Pipe = '|',
+        Dot = '.',
         DoubleDot = ':',
         BackSlash = '\\',
         Et = '&';

@@ -2,19 +2,28 @@ package it.pietroterracciano.kudos.Constants;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.google.android.material.tabs.TabLayout;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
 
+import it.pietroterracciano.kudos.Activities.AAppCompatActivity;
 import it.pietroterracciano.kudos.Models.MotionEventModel;
 
 public abstract class CClass
 {
+    @NonNull
+    public static final Class<MaterialRippleLayout> MaterialRippleLayout = MaterialRippleLayout.class;
+    @NonNull
+    public static final Class<Window> Window = Window.class;
+    @NonNull
+    public static final Class<AAppCompatActivity> AAppCompatActivity = AAppCompatActivity.class;
     @NonNull
     public static final Class<Object> Object = Object.class;
     @NonNull

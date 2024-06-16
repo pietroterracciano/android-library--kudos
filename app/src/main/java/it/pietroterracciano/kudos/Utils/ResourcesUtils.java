@@ -16,7 +16,7 @@ import it.pietroterracciano.kudos.Kudos;
 public abstract class ResourcesUtils
 {
     @NonNull
-    private static final Object _oLock = new Object();
+    private static final Object _lck = new Object();
     @NonNull
     private static final HashMap<Integer, Integer> __hmIDs2Colors = new HashMap<>();
     @NonNull
@@ -30,7 +30,7 @@ public abstract class ResourcesUtils
     @Nullable
     public static Integer getColor(@Nullable Resources r, @NonNull @ColorRes int i)
     {
-        synchronized (_oLock)
+        synchronized (_lck)
         {
             Integer
                 j = __hmIDs2Colors.get(i);
@@ -54,7 +54,7 @@ public abstract class ResourcesUtils
     @Nullable
     public static Drawable getDrawable(@Nullable Resources r, @NonNull @DrawableRes int i)
     {
-        synchronized (_oLock)
+        synchronized (_lck)
         {
             Drawable
                 j = __hmIDs2Drawables.get(i);

@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 
 import java.util.Date;
 
-import it.pietroterracciano.kudos.Utils.DataTypes.NumericUtils.Primitives.longUtils;
+import it.pietroterracciano.kudos.Utils.DataTypes.Primitives.longUtils;
 import it.pietroterracciano.kudos.Utils.DateUtils;
 
 public class UnixTimeStamp implements Comparable<UnixTimeStamp>

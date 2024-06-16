@@ -19,8 +19,17 @@ public abstract class FieldUtils
         return null;
     }
 
+    @Nullable
+    public static <T> T getValue(@Nullable Object o, @Nullable Field fld)
+    {
+        if(o != null && fld != null)
+            try { return ObjectUtils.cast(fld.get(o)); } catch (Exception ignored) {}
+
+        return null;
+    }
+
     @NonNull
-    public static boolean set(@Nullable Object o, @Nullable Field fld, @Nullable Object v)
+    public static boolean setValue(@Nullable Object o, @Nullable Field fld, @Nullable Object v)
     {
         if(o != null && fld != null)
             try { fld.set(o, v); return true; } catch (Exception ignored) {}

@@ -3,6 +3,7 @@ package it.pietroterracciano.kudos.Utils.Views;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -77,5 +78,23 @@ public abstract class WindowUtils
             }
 
         return null;
+    }
+
+    @Nullable
+    public static boolean setStatusBarColor(@Nullable Window w, @NonNull @ColorInt int i)
+    {
+        if(w != null)
+            try { w.setStatusBarColor(i); return true; } catch (Exception ignored) {}
+
+        return false;
+    }
+
+    @Nullable
+    public static boolean setNavigationBarColor(@Nullable Window w, @NonNull @ColorInt int i)
+    {
+        if(w != null)
+            try { w.setNavigationBarColor(i); return true; } catch (Exception ignored) {}
+
+        return false;
     }
 }

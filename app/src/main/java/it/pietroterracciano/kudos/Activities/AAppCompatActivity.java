@@ -1,46 +1,78 @@
 package it.pietroterracciano.kudos.Activities;
 
 import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
 
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.lang.reflect.Constructor;
+
+import it.pietroterracciano.kudos.Behaviors.ActivityBehaviour;
 import it.pietroterracciano.kudos.Kudos;
 
-public class AAppCompatActivity extends AppCompatActivity
+public abstract class AAppCompatActivity extends AppCompatActivity
 {
-    /*
     @NonNull
-    public final ActivityModules Module;
-
-    public AAppCompatActivity()
-    {
-        Module = new ActivityModules();
-    }*/
+    public ActivityBehaviour
+        ActivityBehaviour;
 
     @Override
-    protected void onCreate(Bundle oBundle)
+    protected final void onCreate(@Nullable Bundle bnd)
     {
-        super.onCreate(oBundle);
-        invalidateReferences();
+        super.onCreate(bnd);
+        _invalidateReferences();
+        ActivityBehaviour = new it.pietroterracciano.kudos.Behaviors.ActivityBehaviour(this);
+        onBehaviourReceive(ActivityBehaviour);
+        onCreateReceive(bnd);
     }
 
+    protected abstract void onBehaviourReceive(@NonNull ActivityBehaviour ab);
+    protected abstract void onCreateReceive(@Nullable Bundle bnd);
+
     @Override
-    protected void onStart()
+    protected final void onStart()
     {
         super.onStart();
-        invalidateReferences();
+        _invalidateReferences();
+        onStartReceive();
     }
+
+    protected abstract void onStartReceive();
 
     @Override
-    protected void onResume()
+    protected final void onResume()
     {
         super.onResume();
-        invalidateReferences();
+        _invalidateReferences();
+        onResumeReceive();
     }
 
-    private void invalidateReferences()
+    protected abstract void onResumeReceive();
+
+    private void _invalidateReferences()
     {
         Kudos.registerActivity(this);
     }
+
+    @Override
+    protected final void onPause()
+    {
+        onPauseReceive();
+        super.onPause();
+    }
+
+    protected abstract void onPauseReceive();
+
+    @Override
+    protected final void onStop()
+    {
+        onStopReceive();
+        super.onStop();
+    }
+
+    protected abstract void onStopReceive();
 }

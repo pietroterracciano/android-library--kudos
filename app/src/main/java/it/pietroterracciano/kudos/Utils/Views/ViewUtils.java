@@ -3,6 +3,8 @@ package it.pietroterracciano.kudos.Utils.Views;
 import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +19,19 @@ import it.pietroterracciano.kudos.Utils.LayoutParams.LayoutParamsUtils;
 
 public abstract class ViewUtils
 {
+    @NonNull
+    public static void addFlagsOnSystemUiVisibility(@Nullable View v, @NonNull int i) { _setFlagsOnSystemUiVisibility(v, i, i); }
+    @NonNull
+    public static void clearFlagsOnSystemUiVisibility(@Nullable View v, @NonNull int i) { _setFlagsOnSystemUiVisibility(v, 0, i); }
+    @NonNull
+    private static void _setFlagsOnSystemUiVisibility(@Nullable View v, @NonNull int iValue, @NonNull int iMask)
+    {
+        if(v == null) return;
+        int suiv = v.getSystemUiVisibility();
+        suiv = (suiv&~iMask) | (iValue&iMask);
+        v.setSystemUiVisibility(suiv);
+    }
+
     /*@NonNull
     public static boolean setLayoutParams(@Nullable View vFrom, @Nullable View vTo)
     {

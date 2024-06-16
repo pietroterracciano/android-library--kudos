@@ -1,11 +1,11 @@
-package it.pietroterracciano.kudos.Utils.DataTypes.NumericUtils.Primitives;
+package it.pietroterracciano.kudos.Utils.DataTypes.Primitives;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.Date;
 
-import it.pietroterracciano.kudos.Utils.DataTypes.NumericUtils.NonPrimitives.LongUtils;
+import it.pietroterracciano.kudos.Utils.DataTypes.NonPrimitives.LongUtils;
 
 public final class longUtils
 {

@@ -1,4 +1,4 @@
-package it.pietroterracciano.kudos.Utils.DataTypes.NumericUtils.NonPrimitives;
+package it.pietroterracciano.kudos.Utils.DataTypes.NonPrimitives;
 
 import androidx.annotation.Nullable;
 

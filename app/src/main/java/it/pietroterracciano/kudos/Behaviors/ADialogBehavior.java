@@ -14,7 +14,7 @@ import androidx.annotation.StyleRes;
 
 import it.pietroterracciano.kudos.Enums.EVLayoutParam;
 import it.pietroterracciano.kudos.Enums.EWLayoutParam;
-import it.pietroterracciano.kudos.Utils.DataTypes.NumericUtils.Primitives.integerUtils;
+import it.pietroterracciano.kudos.Utils.DataTypes.Primitives.intUtils;
 import it.pietroterracciano.kudos.Utils.Views.ViewUtils;
 import it.pietroterracciano.kudos.Utils.Views.WindowUtils;
 
@@ -183,10 +183,10 @@ public abstract class ADialogBehavior<DialogType extends ADialogBehavior<DialogT
         x_vInflated = onFindInflatedView(x_oViewGroup);
 
         if(!_bHasRWidth)
-            _iRWidth = integerUtils.convert(ViewUtils.getLayoutParamInt(x_vInflated, EVLayoutParam.Width));
+            _iRWidth = intUtils.convert(ViewUtils.getLayoutParamInt(x_vInflated, EVLayoutParam.Width));
 
         if(!_bHasRHeight)
-            _iRHeight = integerUtils.convert(ViewUtils.getLayoutParamInt(x_vInflated, EVLayoutParam.Height));
+            _iRHeight = intUtils.convert(ViewUtils.getLayoutParamInt(x_vInflated, EVLayoutParam.Height));
     }
 
     @Nullable
@@ -209,16 +209,16 @@ public abstract class ADialogBehavior<DialogType extends ADialogBehavior<DialogT
         x_oWindow = x_oDialog.getWindow();
 
         if(!_bHasWX)
-            _iWX = integerUtils.convert(WindowUtils.getLayoutParam(x_oWindow, EWLayoutParam.X));
+            _iWX = intUtils.convert(WindowUtils.getLayoutParam(x_oWindow, EWLayoutParam.X));
 
         if(!_bHasWY)
-            _iWY = integerUtils.convert(WindowUtils.getLayoutParam(x_oWindow, EWLayoutParam.Y));
+            _iWY = intUtils.convert(WindowUtils.getLayoutParam(x_oWindow, EWLayoutParam.Y));
 
         if(!_bHasWGravity)
-            _iWGravity = integerUtils.convert(WindowUtils.getLayoutParam(x_oWindow, EWLayoutParam.Gravity));
+            _iWGravity = intUtils.convert(WindowUtils.getLayoutParam(x_oWindow, EWLayoutParam.Gravity));
 
         if(!_bHasWWindowAnimations)
-            _iWWindowAnimations = integerUtils.convert(WindowUtils.getLayoutParam(x_oWindow, EWLayoutParam.Animations));
+            _iWWindowAnimations = intUtils.convert(WindowUtils.getLayoutParam(x_oWindow, EWLayoutParam.Animations));
 
         if(!_bHasWDimBehindEnabled)
             _bIsWDimBehindEnabled = true;

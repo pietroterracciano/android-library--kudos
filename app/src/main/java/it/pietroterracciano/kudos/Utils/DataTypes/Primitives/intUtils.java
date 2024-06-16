@@ -1,12 +1,36 @@
-package it.pietroterracciano.kudos.Utils.DataTypes.NumericUtils.Primitives;
+package it.pietroterracciano.kudos.Utils.DataTypes.Primitives;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import it.pietroterracciano.kudos.Utils.DataTypes.NumericUtils.NonPrimitives.IntegerUtils;
+import java.util.concurrent.ThreadLocalRandom;
 
-public abstract class integerUtils
+import it.pietroterracciano.kudos.Utils.DataTypes.NonPrimitives.IntegerUtils;
+
+public abstract class intUtils
 {
+    @NonNull
+    public static int random()
+    {
+        return random(Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+    @NonNull
+    public static int random(@NonNull int i)
+    {
+        return random(-i, i);
+    }
+    @NonNull
+    public static int random(@NonNull int iMin, @NonNull int iMax)
+    {
+        if(iMin > iMax)
+        {
+            int i = iMin;
+            iMin = iMax;
+            iMax = i;
+        }
+
+        return ThreadLocalRandom.current().nextInt(iMin, iMax + 1);
+    }
     @NonNull
     public static int convert(@Nullable Integer i) { return i != null ? i : 0; }
     @NonNull
