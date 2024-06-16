@@ -54,7 +54,7 @@ public abstract class LayoutInflaterController
     }
 
     @Nullable
-    public static <T extends Fragment> View inflate(@Nullable ViewGroup x_vg, Class<T> cls, boolean bAttach2vg)
+    public static <T extends Fragment> T inflate(@Nullable ViewGroup x_vg, Class<T> cls, boolean bAttach2vg)
     {
         if(x_vg == null || cls == null) return null;
         LayoutInflater li = getService();
@@ -64,10 +64,10 @@ public abstract class LayoutInflaterController
         T t = ConstructorUtils.createInstance(cns);
         if(t == null) return null;
         View x_v = t.onCreateView(li, x_vg, null);
-        if(x_v == null) return null;
+        if(x_v == null) return t;
         t.onViewCreated(x_v, null);
-        if(!bAttach2vg) return x_v;
+        if(!bAttach2vg) return t;
         ViewUtils.addChild(x_vg, x_v);
-        return x_v;
+        return t;
     }
 }

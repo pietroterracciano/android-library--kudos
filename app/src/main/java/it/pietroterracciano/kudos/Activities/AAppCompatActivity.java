@@ -2,16 +2,23 @@ package it.pietroterracciano.kudos.Activities;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 
+import androidx.annotation.IdRes;
+import androidx.annotation.IntegerRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
 
 import it.pietroterracciano.kudos.Behaviors.ActivityBehaviour;
+import it.pietroterracciano.kudos.Controllers.LayoutInflaterController;
 import it.pietroterracciano.kudos.Kudos;
 
 public abstract class AAppCompatActivity extends AppCompatActivity
@@ -26,32 +33,37 @@ public abstract class AAppCompatActivity extends AppCompatActivity
         super.onCreate(bnd);
         _invalidateReferences();
         ActivityBehaviour = new it.pietroterracciano.kudos.Behaviors.ActivityBehaviour(this);
-        onBehaviourReceive(ActivityBehaviour);
-        onCreateReceive(bnd);
+        _onBehaviourReceive(ActivityBehaviour);
+        Integer ilrid = _onLayoutResourceIDInflate();
+        if(ilrid != null) setContentView(ilrid);
+        _onCreateReceive(bnd);
     }
 
-    protected abstract void onBehaviourReceive(@NonNull ActivityBehaviour ab);
-    protected abstract void onCreateReceive(@Nullable Bundle bnd);
+    protected abstract void _onBehaviourReceive(@NonNull ActivityBehaviour ab);
+    @LayoutRes
+    @Nullable
+    protected abstract Integer _onLayoutResourceIDInflate();
+    protected abstract void _onCreateReceive(@Nullable Bundle bnd);
 
     @Override
     protected final void onStart()
     {
         super.onStart();
         _invalidateReferences();
-        onStartReceive();
+        _onStartReceive();
     }
 
-    protected abstract void onStartReceive();
+    protected abstract void _onStartReceive();
 
     @Override
     protected final void onResume()
     {
         super.onResume();
         _invalidateReferences();
-        onResumeReceive();
+        _onResumeReceive();
     }
 
-    protected abstract void onResumeReceive();
+    protected abstract void _onResumeReceive();
 
     private void _invalidateReferences()
     {
@@ -61,18 +73,31 @@ public abstract class AAppCompatActivity extends AppCompatActivity
     @Override
     protected final void onPause()
     {
-        onPauseReceive();
+        _onPauseReceive();
         super.onPause();
     }
 
-    protected abstract void onPauseReceive();
+    protected abstract void _onPauseReceive();
 
     @Override
     protected final void onStop()
     {
-        onStopReceive();
+        _onStopReceive();
         super.onStop();
     }
 
-    protected abstract void onStopReceive();
+    protected abstract void _onStopReceive();
+
+    @Nullable
+    public final <T extends Fragment> T inflate(@Nullable ViewGroup x_vg, @Nullable Class<T> cls)
+    {
+        return LayoutInflaterController.inflate(x_vg, cls, true);
+    }
+
+    @Nullable
+    public final <T extends Fragment> T inflate(@IdRes @NotNull int ivg, @Nullable Class<T> cls)
+    {
+        ViewGroup x_vg = findViewById(ivg);
+        return inflate(x_vg, cls);
+    }
 }
