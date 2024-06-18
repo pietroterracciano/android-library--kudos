@@ -89,15 +89,13 @@ public abstract class AAppCompatActivity extends AppCompatActivity
     protected abstract void _onStopReceive();
 
     @Nullable
-    public final <T extends Fragment> T inflate(@Nullable ViewGroup x_vg, @Nullable Class<T> cls)
+    public final <T extends Fragment> T inflate(@IdRes @NotNull int i, @Nullable Class<T> cls)
     {
-        return LayoutInflaterController.inflate(x_vg, cls, true);
+        return inflate(findViewById(i), cls);
     }
-
     @Nullable
-    public final <T extends Fragment> T inflate(@IdRes @NotNull int ivg, @Nullable Class<T> cls)
+    public final <T extends Fragment> T inflate(@Nullable ViewGroup vg, @Nullable Class<T> cls)
     {
-        ViewGroup x_vg = findViewById(ivg);
-        return inflate(x_vg, cls);
+        return LayoutInflaterController.inflate(vg, cls, true);
     }
 }

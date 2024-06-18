@@ -19,7 +19,7 @@ import it.pietroterracciano.kudos.Controllers.LayoutInflaterController;
 public abstract class AFragment extends Fragment
 {
     @Nullable
-    private View _x_v;
+    private View _v;
     @LayoutRes
     @Nullable
     protected abstract Integer _onLayoutResourceIDInflate();
@@ -28,11 +28,17 @@ public abstract class AFragment extends Fragment
     @Nullable
     public final View onCreateView(@NonNull LayoutInflater li, @Nullable ViewGroup vg, @Nullable Bundle bnd)
     {
-        super.onCreateView(li, vg, bnd);
+        if(_v != null)
+            return _v;
+
         Integer ilrid = _onLayoutResourceIDInflate();
         if(ilrid != null)
-            try { return (_x_v = li.inflate(ilrid, vg, false)); } catch (Exception ignored) {}
-        return null;
+            try { _v = li.inflate(ilrid, vg, false); } catch (Exception ignored) {}
+
+        if(_v != null)
+            _onViewCreate(bnd);
+
+        return _v;
     }
 
     @MainThread
@@ -40,28 +46,26 @@ public abstract class AFragment extends Fragment
     public final void onViewCreated(@Nullable View v, @Nullable Bundle bnd)
     {
         if(v == null) return;
-        super.onViewCreated(v, bnd);
-        _onViewCreate(bnd);
+        _onViewBind(bnd);
     }
 
     protected abstract void _onViewCreate(@Nullable Bundle bnd);
+    protected abstract void _onViewBind(@Nullable Bundle bnd);
 
     @Nullable
     public final <ViewType extends View> ViewType findViewById(@IdRes @NotNull int iResourceID)
     {
-        return _x_v != null ? _x_v.findViewById(iResourceID) : null;
-    }
-
-    @Nullable
-    public final <T extends Fragment> T inflate(@Nullable ViewGroup x_vg, @Nullable Class<T> cls)
-    {
-        return LayoutInflaterController.inflate(x_vg, cls, true);
+        return _v != null ? _v.findViewById(iResourceID) : null;
     }
 
     @Nullable
     public final <T extends Fragment> T inflate(@IdRes @NotNull int ivg, @Nullable Class<T> cls)
     {
-        ViewGroup x_vg = findViewById(ivg);
-        return inflate(x_vg, cls);
+        return inflate(findViewById(ivg), cls);
+    }
+    @Nullable
+    public final <T extends Fragment> T inflate(@Nullable ViewGroup vg, @Nullable Class<T> cls)
+    {
+        return LayoutInflaterController.inflate(vg, cls, true);
     }
 }

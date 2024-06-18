@@ -9,6 +9,7 @@ import androidx.lifecycle.Lifecycle;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import it.pietroterracciano.kudos.Kudos;
@@ -19,9 +20,10 @@ import it.pietroterracciano.kudos.Utils.ObjectUtils;
 public final class FragmentStateAdapter extends androidx.viewpager2.adapter.FragmentStateAdapter
 {
     @NonNull
-    private Object _oLock;
+    private List<Class<? extends Fragment>> _l;
     @NonNull
-    private List<Class<? extends Fragment>> _lItems;
+    private HashMap<Integer, Fragment> _hm;
+
 
     public FragmentStateAdapter() {this(Kudos.getFragmentManager(), Kudos.getLifecycle()); }
     public FragmentStateAdapter(@NonNull Lifecycle lifecycle) {this(Kudos.getFragmentManager(), lifecycle); _this(); }
@@ -31,8 +33,8 @@ public final class FragmentStateAdapter extends androidx.viewpager2.adapter.Frag
 
     private void _this()
     {
-        _oLock = new Object();
-        _lItems = new ArrayList<>();
+        _hm = new HashMap<>();
+        _l = new ArrayList<>();
     }
 
     @NonNull
@@ -41,11 +43,11 @@ public final class FragmentStateAdapter extends androidx.viewpager2.adapter.Frag
         if(itm == null)
             return false;
 
-        synchronized (_oLock)
+        synchronized (_l)
         {
-            int j = ListUtils.adse(_lItems, itm, false);
+            int j = ListUtils.adse(_l, itm, false);
             if(j < -1) return false;
-            else if(j < 0) notifyItemInserted(_lItems.size() -1);
+            else if(j < 0) notifyItemInserted(_l.size() -1);
             else notifyItemChanged(j);
             return true;
         }
@@ -55,10 +57,13 @@ public final class FragmentStateAdapter extends androidx.viewpager2.adapter.Frag
     @Override
     public Fragment createFragment(@NonNull int i)
     {
-        synchronized (_oLock)
+        synchronized (_l)
         {
             Fragment
-                frg;
+                frg = _hm.get(i);
+
+            if(frg != null)
+                return frg;
 
             Class<? extends Fragment>
                 cls = getItem(i);
@@ -70,11 +75,11 @@ public final class FragmentStateAdapter extends androidx.viewpager2.adapter.Frag
 
                 frg = ConstructorUtils.createInstance(cns);
             }
-            else
-                frg = null;
 
             if(frg == null)
                 frg = new Fragment();
+
+            _hm.put(i, frg);
 
             return frg;
         }
@@ -83,18 +88,18 @@ public final class FragmentStateAdapter extends androidx.viewpager2.adapter.Frag
     @Nullable
     public <T extends Fragment> Class<T> getItem(@NonNull int i)
     {
-        synchronized (_oLock)
+        synchronized (_l)
         {
-            return ObjectUtils.cast(ListUtils.get(_lItems, i));
+            return ObjectUtils.cast(ListUtils.get(_l, i));
         }
     }
 
     @Nullable
     public Integer getItemIndex(Class<? extends Fragment> cls)
     {
-        synchronized (_oLock)
+        synchronized (_l)
         {
-            return _lItems.indexOf(cls);
+            return _l.indexOf(cls);
         }
     }
 
@@ -102,9 +107,9 @@ public final class FragmentStateAdapter extends androidx.viewpager2.adapter.Frag
     @NonNull
     public int getItemCount()
     {
-        synchronized (_oLock)
+        synchronized (_l)
         {
-            return _lItems.size();
+            return _l.size();
         }
     }
 }
