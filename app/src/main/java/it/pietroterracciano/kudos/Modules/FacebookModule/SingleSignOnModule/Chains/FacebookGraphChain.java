@@ -14,7 +14,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 import it.pietroterracciano.kudos.Constants.CString;
-import it.pietroterracciano.kudos.Controllers.ThreadController;
+import it.pietroterracciano.kudos.Utils.ThreadUtils;
 import it.pietroterracciano.kudos.Modules.FacebookModule.Handlers.FacebookHandler;
 import it.pietroterracciano.kudos.Modules.FacebookModule.SingleSignOnModule.Enums.EFacebookGraphRequest;
 import it.pietroterracciano.kudos.Modules.FacebookModule.SingleSignOnModule.Interfaces.IFacebookGraphChain;
@@ -72,7 +72,7 @@ implements
     public int executeAsync()
     {
         return
-            ThreadController.runOnBackground
+            ThreadUtils.runOnBackground
             (
                 new Runnable()
                 {

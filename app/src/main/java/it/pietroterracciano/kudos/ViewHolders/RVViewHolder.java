@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import it.pietroterracciano.kudos.Controllers.LayoutInflaterController;
+import it.pietroterracciano.kudos.Utils.LayoutInflaterUtils;
 import it.pietroterracciano.kudos.Kudos;
 import it.pietroterracciano.kudos.Layouts.RVItemLayout;
 
@@ -18,7 +18,7 @@ public final class RVViewHolder extends RecyclerView.ViewHolder
 
     private RVViewHolder(@NonNull ViewGroup vg, @NonNull RVItemLayout<?> il)
     {
-        super(LayoutInflaterController.inflate(il.LayoutResourceID, vg, false));
+        super(LayoutInflaterUtils.inflate(il.LayoutResourceID, vg, false));
         TransientID = Kudos.newTransientID();
         ItemLayout = il;
     }

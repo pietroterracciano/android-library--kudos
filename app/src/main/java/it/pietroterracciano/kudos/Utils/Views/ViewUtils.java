@@ -1,11 +1,13 @@
 package it.pietroterracciano.kudos.Utils.Views;
 
+import android.app.Activity;
 import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -20,6 +22,15 @@ import it.pietroterracciano.kudos.Utils.LayoutParams.LayoutParamsUtils;
 
 public abstract class ViewUtils
 {
+    @Nullable
+    public static <T extends View> T findViewById(@Nullable View v, @NonNull @IdRes int i)
+    {
+        if(v != null)
+            try { return v.findViewById(i); } catch (Exception ignored) {}
+
+        return null;
+    }
+
     @NonNull
     public static void addFlagsOnSystemUiVisibility(@Nullable View v, @NonNull int i) { _setFlagsOnSystemUiVisibility(v, i, i); }
     @NonNull
@@ -219,14 +230,5 @@ public abstract class ViewUtils
         }
 
         return v;
-    }
-
-    @NonNull
-    public static boolean addChild(@Nullable ViewGroup x_vg, @Nullable View x_v)
-    {
-        if(x_vg != null && x_v != null)
-            try { x_vg.addView(x_v); return true; } catch (Exception ignored) {}
-
-        return false;
     }
 }

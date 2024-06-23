@@ -16,7 +16,7 @@ public final class WindowBehaviour
 {
     @Nullable
     private final Window _w;
-    @Nullable
+    @NonNull
     public final DecorViewBehaviour DecorViewBehaviour;
 
     @NonNull

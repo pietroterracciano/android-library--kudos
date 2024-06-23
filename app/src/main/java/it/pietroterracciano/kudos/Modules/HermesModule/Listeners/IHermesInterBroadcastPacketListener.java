@@ -4,7 +4,7 @@ import android.content.Intent;
 
 import androidx.annotation.Nullable;
 
-public interface IHermerInterBroadcastPacketListener
+public interface IHermesInterBroadcastPacketListener
 {
     public void onPacketReceive(@Nullable Intent ntt);
 }

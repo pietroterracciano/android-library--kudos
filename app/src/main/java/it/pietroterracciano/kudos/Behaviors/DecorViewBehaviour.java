@@ -37,5 +37,5 @@ public final class DecorViewBehaviour
     @NonNull
     public DecorViewBehaviour clearFlagsOnSystemUiVisibility(@NonNull int i) { ViewUtils.clearFlagsOnSystemUiVisibility(_v, i); return this; }
 
-    public DecorViewBehaviour(@Nullable View v) {  _v = v; }
+    public DecorViewBehaviour(@Nullable View v) { _v = v; }
 }

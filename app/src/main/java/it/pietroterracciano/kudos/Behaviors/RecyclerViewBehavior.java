@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import it.pietroterracciano.kudos.Controllers.ThreadController;
+import it.pietroterracciano.kudos.Utils.ThreadUtils;
 import it.pietroterracciano.kudos.Enums.ELMItemPosition;
 import it.pietroterracciano.kudos.Enums.EVLayoutParam;
 import it.pietroterracciano.kudos.Interfaces.IRVOnEndlessListener;
@@ -157,14 +157,14 @@ public class RecyclerViewBehavior
 
         try { lst.fg_onBeforeEndless(); } catch (Exception ignored){}
 
-        ThreadController.runOnBackground(new Runnable()
+        ThreadUtils.runOnBackground(new Runnable()
         {
             @Override
             public void run()
             {
                 try { lst.bg_onEndless(); } catch (Exception ignored) {}
 
-                ThreadController.runOnForeground(new Runnable()
+                ThreadUtils.runOnForeground(new Runnable()
                 {
                     @Override
                     public void run()

@@ -13,12 +13,11 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import it.pietroterracciano.kudos.Constants.CString;
-import it.pietroterracciano.kudos.Controllers.ThreadController;
+import it.pietroterracciano.kudos.Utils.ThreadUtils;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Constants.CHTTPHeader;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Enums.EHTTPCharset;
 import it.pietroterracciano.kudos.Modules.HTTPModule.Enums.EHTTPConnection;
@@ -142,7 +141,7 @@ public final class HTTPingRequestExecutor
 
     public final void executeAsync(@Nullable IHTTPingOnResponseReceiveListener lst)
     {
-        ThreadController.runOnBackground(new Runnable()
+        ThreadUtils.runOnBackground(new Runnable()
         {
             @Override
             public void run()

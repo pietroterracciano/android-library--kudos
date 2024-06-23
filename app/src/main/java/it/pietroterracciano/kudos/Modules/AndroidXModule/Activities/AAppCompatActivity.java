@@ -1,12 +1,11 @@
-package it.pietroterracciano.kudos.Activities;
+package it.pietroterracciano.kudos.Modules.AndroidXModule.Activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 
 import androidx.annotation.IdRes;
-import androidx.annotation.IntegerRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,34 +14,49 @@ import androidx.fragment.app.Fragment;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Constructor;
-
-import it.pietroterracciano.kudos.Behaviors.ActivityBehaviour;
-import it.pietroterracciano.kudos.Controllers.LayoutInflaterController;
+import it.pietroterracciano.kudos.Behaviors.WindowBehaviour;
+import it.pietroterracciano.kudos.Modules.AndroidXModule.Behaviours.ActionBarBehaviour;
+import it.pietroterracciano.kudos.Utils.ActivityUtils;
+import it.pietroterracciano.kudos.Utils.LayoutInflaterUtils;
 import it.pietroterracciano.kudos.Kudos;
+import it.pietroterracciano.kudos.Modules.AndroidXModule.Utils.AppCompatActivityUtils;
 
 public abstract class AAppCompatActivity extends AppCompatActivity
 {
-    @NonNull
-    public ActivityBehaviour
-        ActivityBehaviour;
-
     @Override
     protected final void onCreate(@Nullable Bundle bnd)
     {
         super.onCreate(bnd);
         _invalidateReferences();
-        ActivityBehaviour = new it.pietroterracciano.kudos.Behaviors.ActivityBehaviour(this);
-        _onBehaviourReceive(ActivityBehaviour);
-        Integer ilrid = _onLayoutResourceIDInflate();
-        if(ilrid != null) setContentView(ilrid);
+        _onWindowBehaviourReceive(new WindowBehaviour(getWindow()));
+        Integer ilr2i = _onLayoutResourceToInflate();
+        if(ilr2i != null)
+        {
+            setContentView(ilr2i);
+            Integer itid2i = _onToolbarIDToInflate();
+            if(itid2i != null)
+            {
+                setSupportActionBar(itid2i);
+                _onActionBarBehaviourReceive(new ActionBarBehaviour(getSupportActionBar()));
+            }
+        }
         _onCreateReceive(bnd);
+        _onIntentReceive(getIntent());
     }
 
-    protected abstract void _onBehaviourReceive(@NonNull ActivityBehaviour ab);
-    @LayoutRes
-    @Nullable
-    protected abstract Integer _onLayoutResourceIDInflate();
+    public final void setSupportActionBar(@NonNull @IdRes int i)
+    {
+        AppCompatActivityUtils.setSupportActionBar(this, i);
+    }
+
+    @Nullable @LayoutRes
+    protected abstract Integer _onLayoutResourceToInflate();
+    @Nullable @IdRes
+    protected abstract Integer _onToolbarIDToInflate();
+
+    protected abstract void _onIntentReceive(@Nullable Intent intent);
+    protected abstract void _onActionBarBehaviourReceive(@NonNull ActionBarBehaviour abb);
+    protected abstract void _onWindowBehaviourReceive(@NonNull WindowBehaviour wb);
     protected abstract void _onCreateReceive(@Nullable Bundle bnd);
 
     @Override
@@ -96,6 +110,11 @@ public abstract class AAppCompatActivity extends AppCompatActivity
     @Nullable
     public final <T extends Fragment> T inflate(@Nullable ViewGroup vg, @Nullable Class<T> cls)
     {
-        return LayoutInflaterController.inflate(vg, cls, true);
+        return LayoutInflaterUtils.inflate(vg, cls, true);
+    }
+
+    protected final void _startActivity(@Nullable Class<? extends Activity> cls)
+    {
+        ActivityUtils.start(cls);
     }
 }

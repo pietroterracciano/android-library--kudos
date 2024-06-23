@@ -7,19 +7,19 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.pietroterracciano.kudos.Controllers.ThreadController;
-import it.pietroterracciano.kudos.Modules.HermesModule.Listeners.IHermerInterBroadcastPacketListener;
+import it.pietroterracciano.kudos.Utils.ThreadUtils;
+import it.pietroterracciano.kudos.Modules.HermesModule.Listeners.IHermesInterBroadcastPacketListener;
 
 public final class HermesInterBroadcast
 {
-    private final List<IHermerInterBroadcastPacketListener> _l;
+    private final List<IHermesInterBroadcastPacketListener> _l;
 
     public HermesInterBroadcast()
     {
         _l = new ArrayList<>();
     }
 
-    public HermesInterBroadcast registerPacketListener(@Nullable IHermerInterBroadcastPacketListener lst)
+    public HermesInterBroadcast registerPacketListener(@Nullable IHermesInterBroadcastPacketListener lst)
     {
         if(lst != null)
             synchronized (_l)
@@ -30,7 +30,7 @@ public final class HermesInterBroadcast
         return this;
     }
 
-    public HermesInterBroadcast unregisterPacketListener(@Nullable IHermerInterBroadcastPacketListener lst)
+    public HermesInterBroadcast unregisterPacketListener(@Nullable IHermesInterBroadcastPacketListener lst)
     {
         if(lst != null)
             synchronized (_l)
@@ -54,7 +54,7 @@ public final class HermesInterBroadcast
 
     public HermesInterBroadcast sendPacketAsync(@Nullable Intent ntt)
     {
-        ThreadController.runOnBackground(new Runnable() {
+        ThreadUtils.runOnBackground(new Runnable() {
             @Override
             public void run()
             {

@@ -7,7 +7,6 @@ import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 
-import it.pietroterracciano.kudos.Controllers.ServiceController;
 import it.pietroterracciano.kudos.Kudos;
 
 public abstract class ScreenUtils
@@ -23,7 +22,7 @@ public abstract class ScreenUtils
         if(cnt == null)
             return  null;
 
-        WindowManager wm = ServiceController.getFromSystem(cnt, Context.WINDOW_SERVICE);
+        WindowManager wm = ServiceUtils.getFromSystem(cnt, Context.WINDOW_SERVICE);
         if(wm == null)
             return null;
 

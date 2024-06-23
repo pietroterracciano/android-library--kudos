@@ -1,4 +1,4 @@
-package it.pietroterracciano.kudos.Controllers;
+package it.pietroterracciano.kudos.Utils;
 
 import android.app.Activity;
 
@@ -9,9 +9,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import it.pietroterracciano.kudos.Kudos;
-import it.pietroterracciano.kudos.Utils.RunnableUtils;
 
-public abstract class ThreadController
+public final class ThreadUtils
 {
     @NonNull
     private static final HashSet<Integer>

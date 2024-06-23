@@ -13,7 +13,7 @@ import com.facebook.login.LoginResult;
 
 import java.util.List;
 
-import it.pietroterracciano.kudos.Controllers.ThreadController;
+import it.pietroterracciano.kudos.Utils.ThreadUtils;
 import it.pietroterracciano.kudos.Kudos;
 import it.pietroterracciano.kudos.Modules.FacebookModule.SingleSignOnModule.Enums.EFacebookSSOScope;
 import it.pietroterracciano.kudos.Modules.FacebookModule.SingleSignOnModule.Interfaces.IFacebookSSOChain;
@@ -122,7 +122,7 @@ implements
     public int executeAsync()
     {
         return
-            ThreadController.runOnBackground(new Runnable()
+            ThreadUtils.runOnBackground(new Runnable()
             {
                 @Override
                 public void run()

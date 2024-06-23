@@ -1,7 +1,6 @@
-package it.pietroterracciano.kudos.Controllers;
+package it.pietroterracciano.kudos.Utils;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 
@@ -9,7 +8,7 @@ import androidx.annotation.NonNull;
 
 import it.pietroterracciano.kudos.Kudos;
 
-public class VibrationController
+public final class VibrationUtils
 {
     @NonNull
     public static boolean vibrate(@NonNull long l)
@@ -23,7 +22,7 @@ public class VibrationController
             return false;
 
         Vibrator
-            vbr = ServiceController.getFromSystem(cnt, Context.VIBRATOR_SERVICE);
+            vbr = ServiceUtils.getFromSystem(cnt, Context.VIBRATOR_SERVICE);
 
         if(vbr == null)
             return false;

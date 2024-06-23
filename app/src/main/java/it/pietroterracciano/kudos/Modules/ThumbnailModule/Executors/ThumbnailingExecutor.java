@@ -17,7 +17,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
-import it.pietroterracciano.kudos.Controllers.ThreadController;
+import it.pietroterracciano.kudos.Utils.ThreadUtils;
 import it.pietroterracciano.kudos.Kudos;
 import it.pietroterracciano.kudos.Modules.ThumbnailModule.Enums.EThumbnailDownsampleStrategy;
 import it.pietroterracciano.kudos.Modules.ThumbnailModule.Listeners.IThumbnailingOnGenericActionListener;
@@ -130,7 +130,7 @@ public class ThumbnailingExecutor
 
     public void execute()
     {
-        ThreadController.runOnBackground(new Runnable()
+        ThreadUtils.runOnBackground(new Runnable()
         {
             @Override
             public void run()
@@ -229,7 +229,7 @@ public class ThumbnailingExecutor
                 if(_bIsAutoloadDrawableEnabled == null)
                     _bIsAutoloadDrawableEnabled = false;
 
-                ThreadController.runOnForeground(new Runnable()
+                ThreadUtils.runOnForeground(new Runnable()
                 {
                     @Override
                     public void run()
@@ -282,7 +282,7 @@ public class ThumbnailingExecutor
     {
         if(lst == null) return;
 
-        ThreadController.runOnForeground(new Runnable() {
+        ThreadUtils.runOnForeground(new Runnable() {
             @Override
             public void run()
             {
@@ -299,7 +299,7 @@ public class ThumbnailingExecutor
 
     private static void invokeAutoload(@Nullable ImageView iv, @Nullable Drawable drw)
     {
-        ThreadController.runOnForeground(new Runnable() {
+        ThreadUtils.runOnForeground(new Runnable() {
             @Override
             public void run()
             {

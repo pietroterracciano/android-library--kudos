@@ -13,7 +13,6 @@ import com.google.android.material.tabs.TabLayout;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 
-import it.pietroterracciano.kudos.Activities.AAppCompatActivity;
 import it.pietroterracciano.kudos.Models.MotionEventModel;
 
 public abstract class CClass
@@ -23,7 +22,7 @@ public abstract class CClass
     @NonNull
     public static final Class<Window> Window = Window.class;
     @NonNull
-    public static final Class<AAppCompatActivity> AAppCompatActivity = AAppCompatActivity.class;
+    public static final Class<it.pietroterracciano.kudos.Modules.AndroidXModule.Activities.AAppCompatActivity> AAppCompatActivity = it.pietroterracciano.kudos.Modules.AndroidXModule.Activities.AAppCompatActivity.class;
     @NonNull
     public static final Class<Object> Object = Object.class;
     @NonNull

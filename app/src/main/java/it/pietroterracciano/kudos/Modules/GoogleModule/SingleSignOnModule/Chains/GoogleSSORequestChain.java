@@ -11,7 +11,7 @@ import androidx.credentials.GetCredentialResponse;
 
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 
-import it.pietroterracciano.kudos.Controllers.ThreadController;
+import it.pietroterracciano.kudos.Utils.ThreadUtils;
 import it.pietroterracciano.kudos.Kudos;
 import it.pietroterracciano.kudos.Modules.GoogleModule.SingleSignOnModule.Interfaces.IGoogleSSORequestChain;
 import it.pietroterracciano.kudos.Modules.GoogleModule.SingleSignOnModule.Interfaces.IGoogleSSORequestChainOnResult;
@@ -195,7 +195,7 @@ implements
     public int executeAsync()
     {
         return
-            ThreadController.runOnBackground(new Runnable()
+            ThreadUtils.runOnBackground(new Runnable()
             {
                 @Override
                 public void run()

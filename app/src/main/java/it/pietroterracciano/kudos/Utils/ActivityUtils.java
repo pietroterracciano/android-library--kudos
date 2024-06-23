@@ -1,15 +1,51 @@
-package it.pietroterracciano.kudos.Controllers;
+package it.pietroterracciano.kudos.Utils;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toolbar;
 
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import it.pietroterracciano.kudos.Kudos;
 
-public abstract class ActivityController
+public abstract class ActivityUtils
 {
+    @Nullable
+    public static <T extends View> T findViewById(@Nullable Activity act, @NonNull @IdRes int i)
+    {
+        if(act != null)
+            try { return act.findViewById(i); } catch (Exception ignored) {}
+
+        return null;
+    }
+
+    @NonNull
+    public static boolean setActionBar(@Nullable Activity act, @NonNull @IdRes int i)
+    {
+        return setActionBar(act, findViewById(act, i));
+    }
+    @NonNull
+    public static boolean setActionBar(@Nullable Activity act, @Nullable Toolbar tlb)
+    {
+        if(act != null && tlb != null)
+            try { act.setActionBar(tlb); return true; } catch (Exception ignored) {}
+
+        return false;
+    }
+
+    @Nullable
+    public static ActionBar getActionBar(@Nullable Activity act)
+    {
+        return act != null
+            ? act.getActionBar()
+            : null;
+    }
+
     @Nullable
     public static Integer start(Class<? extends Activity> oClass)
     {

@@ -8,7 +8,7 @@ import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Map;
 
-import it.pietroterracciano.kudos.Controllers.ThreadController;
+import it.pietroterracciano.kudos.Utils.ThreadUtils;
 import it.pietroterracciano.kudos.Utils.DataTypes.StringUtils;
 
 public final class HTTPingResponse
@@ -108,7 +108,7 @@ public final class HTTPingResponse
 
     public void disconnectAsync()
     {
-        ThreadController.runOnBackground(new Runnable()
+        ThreadUtils.runOnBackground(new Runnable()
         {
             @Override
             public void run()

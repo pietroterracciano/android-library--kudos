@@ -16,143 +16,74 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.security.Key;
 
 import it.pietroterracciano.kudos.Enums.EVLayoutParam;
+import it.pietroterracciano.kudos.R;
+import it.pietroterracciano.kudos.Utils.Dialogs.BottomSheetDialogUtils;
 import it.pietroterracciano.kudos.Utils.KeyboardUtils;
 import it.pietroterracciano.kudos.Utils.ScreenUtils;
+import it.pietroterracciano.kudos.Utils.Views.ViewGroupUtils;
 import it.pietroterracciano.kudos.Utils.Views.ViewUtils;
 
 public class BottomSheetDialogBehavior extends ADialogBehavior<BottomSheetDialogBehavior>
 {
-    @NonNull
-    private final Rect _r;
-    @NonNull
-    private boolean _bIsAttached2Bottom;
     @Nullable
-    private final View x_vRoot, x_vInflated;
+    private View _x_vSticky;
+    @Nullable
+    private ViewGroup _x_vgContainer;
     @NonNull
     private final BottomSheetBehavior<FrameLayout> _bsb;
+    @NonNull
+    private final BottomSheetDialog _bsd;
 
-    public BottomSheetDialogBehavior isAttached2Bottom(@NonNull boolean bIsAttached2Bottom)
+    @Nullable
+    public ViewGroup getContainerViewGroup()
     {
-        _bIsAttached2Bottom = bIsAttached2Bottom;
+        return _x_vgContainer;
+    }
+
+    public BottomSheetDialogBehavior setStickyView(@Nullable View v)
+    {
+        _x_vSticky = v;
+        _invalidateContainerStickyView();
         return this;
     }
 
-    protected BottomSheetDialogBehavior(@NonNull BottomSheetDialog bsd)
+    private BottomSheetDialogBehavior(@NonNull  BottomSheetDialog bsd)
     {
         super(bsd);
 
+        _bsd = bsd;
         _bsb = bsd.getBehavior();
-        _r = new Rect();
-        x_vRoot = getRootView();
-        x_vInflated = getInflatedView();
-
-        if(
-            x_vRoot == null
-            || x_vInflated == null
-        )
-            return;
-
-        x_vRoot.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
-        {
-            @NonNull
-            private final Rect _r = new Rect();
-            @NonNull
-            private int _i, _j;
-
-            @Override
-            public void onGlobalLayout()
-            {
-                x_vRoot.getWindowVisibleDisplayFrame(_r);
-                _i = ScreenUtils.getHeight();
-                _j = _i - _r.height();
-
-                if (_j > 0.20d * _i)
-                {
-                    _bsb.setState(BottomSheetBehavior.STATE_EXPANDED);
-                    invalidateX();
-                }
-                else
-                    invalidateX();
-            }
-        });
-
-
-        x_vRoot.post(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                invalidateX();
-            }
-        });
-
-        _bsb.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback()
-        {
-            @NonNull
-            private float _f;
-
-            @Override
-            public void onStateChanged(@NonNull View v, @NonNull int i)
-            {
-                switch (i)
-                {
-                    case BottomSheetBehavior.STATE_EXPANDED:
-                    case BottomSheetBehavior.STATE_SETTLING:
-                        break;
-                    default:
-                        KeyboardUtils.hide(x_vInflated);
-                        break;
-                }
-
-                _f = Float.MAX_VALUE;
-                invalidateX();
-            }
-
-            @Override
-            public void onSlide(@NonNull View v, float f)
-            {
-                if(f < 0.0d && _f > f)
-                {
-                    _f = f;
-                    return;
-                }
-
-                invalidateX();
-            }
-        });
     }
 
-    private void invalidateX()
+    @Override
+    protected final void _onContentChangeReceive()
     {
-        if(!_bIsAttached2Bottom) return;
-        x_vRoot.getLocalVisibleRect(_r);
-        ViewUtils.setLayoutParam(x_vInflated, EVLayoutParam.Height, _r.height());
+        _invalidateContainerView();
+        _invalidateContainerStickyView();
     }
 
-    @Nullable
-    public static BottomSheetDialogBehavior from(@Nullable BottomSheetDialog bsd)
+    private void _invalidateContainerView()
     {
-        return bsd != null ? new BottomSheetDialogBehavior(bsd) : null;
+        _x_vgContainer = BottomSheetDialogUtils.findViewById(_bsd, com.google.android.material.R.id.container);
+    }
+
+    private void _invalidateContainerStickyView()
+    {
+        if(_x_vSticky == null) return;
+        ViewGroupUtils.addView(_x_vgContainer, _x_vSticky);
     }
 
     @Override
     @Nullable
-    protected ViewGroup onFindRootViewGroup()
+    protected View _onFindRootView()
     {
-        return findViewById(com.google.android.material.R.id.design_bottom_sheet);
+        return BottomSheetDialogUtils.getRootView(_bsd);
     }
 
     @Override
     @Nullable
-    protected View onFindRootView(@NonNull ViewGroup x_vgRoot)
+    protected View _onFindInflatedView()
     {
-        return x_vgRoot;
-    }
-
-    @Override
-    @Nullable
-    protected View onFindInflatedView(@NonNull ViewGroup x_vgRoot)
-    {
-        return x_vgRoot.getChildAt(0);
+        return BottomSheetDialogUtils.getInflatedView(_bsd);
     }
 }
